@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace NengLong.Mailbox.Data
+namespace Lemon.Template.Domain
 {
     public class EntityIdentity
     {
@@ -13,8 +13,7 @@ namespace NengLong.Mailbox.Data
         /// <value>The identifier.</value>
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long Id { get; protected set; }
-
-
+        
         /// <summary>
         /// 新增人员
         /// </summary>

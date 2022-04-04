@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using Lemon.App.Core;
 using Lemon.AutoMapper;
 using Lemon.Template.Application.Services;
 using Microsoft.Extensions.Configuration;
@@ -7,14 +8,18 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Lemon.Template.Application
 {
-    public static class ApplicationModule
+    public class ApplicationModule : AppModule
     {
+        public ApplicationModule(IServiceCollection services)
+            : base(services)
+        {
+        }
+        
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="services"></param>
         /// <returns></returns>
-        public static IServiceCollection ConfigureServices(this IServiceCollection services)
+        public override void ConfigureServices()
         {
             AutoMapperExtensions.AddAutoMapperProfile<ApplicationAutoMapperProfile>();
             IConfiguration configuration = services.BuildServiceProvider().GetService<IConfiguration>();
@@ -29,7 +34,6 @@ namespace Lemon.Template.Application
                 if (targetInterface == null) continue;
                 services.AddScoped(targetInterface, storeClass);
             }
-            return services;
         }
     }
 }

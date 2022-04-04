@@ -79,6 +79,7 @@ namespace Lemon.Template.Web.Authentication
                     };
                 }
             );
+            services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
             services.AddTransient<IAuthorizationHandler, PermissionHandler>();
             // services.AddTransient<IAccessTokenGenerator, AccessTokenGenerator>();
         }

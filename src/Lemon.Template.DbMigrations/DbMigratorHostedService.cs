@@ -32,9 +32,9 @@ namespace Lemon.Template.DbMigrations
             services.AddLogging();
             services.AddSingleton<IConfiguration>(configuration);
 
-            EntityFrameworkCoreModule.ConfigureServices(services);
-            ApplicationModule.ConfigureServices(services);
-            EntityFrameworkCoreDbMigrationsModule.ConfigureServices(services);
+            // EntityFrameworkCoreModule.ConfigureServices(services);
+            // ApplicationModule.ConfigureServices(services);
+            // EntityFrameworkCoreDbMigrationsModule.ConfigureServices(services);
             
             _hostApplicationLifetime.StopApplication();
             return Task.CompletedTask;

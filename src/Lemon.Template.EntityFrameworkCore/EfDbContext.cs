@@ -4,7 +4,6 @@ using System.Linq;
 using System.Reflection;
 using Lemon.Template.Domain;
 using Microsoft.EntityFrameworkCore;
-using NengLong.Mailbox.Data;
 
 namespace Lemon.Template.EntityFrameworkCore
 {

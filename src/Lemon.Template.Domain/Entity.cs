@@ -1,5 +1,4 @@
 ﻿using System;
-using Lemon.Common.Snowflake;
 
 namespace Lemon.Template.Domain
 {

@@ -15,7 +15,7 @@ namespace Lemon.Template.EntityFrameworkCore
         {
             builder.Entity<RoleData>(b =>
             {
-                b.ToTable("RoleData");
+                b.ToTable(nameof(RoleData));
                 b.HasKey(o => o.Id);
                 b.HasMany(x => x.RolePermissionDatas)
                     .WithOne()
@@ -24,19 +24,19 @@ namespace Lemon.Template.EntityFrameworkCore
             
             builder.Entity<RolePermissionData>(b =>
             {
-                b.ToTable("RolePermissionData");
+                b.ToTable(nameof(RolePermissionData));
                 b.HasKey(x => x.Id );
             });
             
             builder.Entity<PermissionData>(b =>
             {
-                b.ToTable("PermissionData");
+                b.ToTable(nameof(PermissionData));
                 b.HasKey(o => o.Id);
             });
             
             builder.Entity<UserData>(b =>
             {
-                b.ToTable("UserData");
+                b.ToTable(nameof(UserData));
                 b.HasKey(o => o.Id);
                 b.HasMany(x => x.UserRoles)
                     .WithOne()
@@ -48,7 +48,7 @@ namespace Lemon.Template.EntityFrameworkCore
 
             builder.Entity<UserRole>(b =>
             {
-                b.ToTable("UserRole");
+                b.ToTable(nameof(UserRole));
                 b.HasKey(x=> x.Id);
                 b.HasOne(x => x.RoleData)
                     .WithOne()

@@ -1,4 +1,4 @@
-using System;
+using System.Data;
 using Lemon.Common.Extend;
 
 namespace Lemon.Template.Domain.Shared
@@ -9,9 +9,8 @@ namespace Lemon.Template.Domain.Shared
         {
             if (value.IsNullOrWhiteSpace())
             {
-                throw new Exception($"{name}不能为空");
+                throw new NoNullAllowedException($"{name}不能为空");
             }
         }
-
     }
 }

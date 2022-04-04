@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Reflection;
+using Lemon.App.Core;
 using Lemon.Template.Domain.Repositories;
 using Lemon.Template.EntityFrameworkCore.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -9,14 +10,14 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Lemon.Template.EntityFrameworkCore
 {
-    public static class EntityFrameworkCoreModule
+    public class EntityFrameworkCoreModule : AppModule
     {
-        public static IServiceCollection ConfigureServices(this IServiceCollection services)
+
+        public EntityFrameworkCoreModule(IServiceCollection services) : base(services)
         {
-            return services.AddDbContext();
         }
         
-        private static IServiceCollection AddDbContext(this IServiceCollection services)
+        public override void ConfigureServices()
         {
             IConfiguration configuration = services.BuildServiceProvider().GetService<IConfiguration>();
 
@@ -30,7 +31,6 @@ namespace Lemon.Template.EntityFrameworkCore
             services.AddScoped<IDbContextProvider<EfDbContext>, DbContextProvider<EfDbContext>>();
             services.AddScoped<IRepository, Repository>();
             services.AddScoped(typeof(IRepository<>),typeof(Repository<>));
-            return services;
         }
     }
 }
