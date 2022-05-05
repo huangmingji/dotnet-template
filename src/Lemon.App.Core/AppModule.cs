@@ -4,7 +4,7 @@ namespace Lemon.App.Core;
 
 public class AppModule
 {
-    protected IServiceCollection services;
+    protected readonly IServiceCollection services;
     public AppModule(IServiceCollection services)
     {
         this.services = services;

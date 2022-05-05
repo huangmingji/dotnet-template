@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Lemon.Template.Domain
+namespace Lemon.Template.Domain.Shared
 {
     public class Entity
     {

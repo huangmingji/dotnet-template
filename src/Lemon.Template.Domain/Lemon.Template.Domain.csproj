@@ -7,10 +7,6 @@
   <ItemGroup>
     <Folder Include="Account" />
   </ItemGroup>
-  
-  <ItemGroup>
-    <PackageReference Include="Lemon.Common" Version="1.1.9" />
-  </ItemGroup>
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>

@@ -1,0 +1,14 @@
+﻿<MudPaper Class="py-3" Elevation="0">
+    <MudNavMenu Class="mud-width-full">
+        <MudText Typo="Typo.h6" Class="px-4">My Application</MudText>
+        <MudText Typo="Typo.body2" Class="px-4 mud-text-secondary">Secondary Text</MudText>
+        <MudDivider Class="my-2"/>
+        <MudNavLink Href="/" Match="NavLinkMatch.All"  Icon="@Icons.Filled.Dashboard">Dashboard</MudNavLink>
+        <MudNavLink Href="/counter" Match="NavLinkMatch.Prefix"  Icon="@Icons.Filled.FileOpen">Counter</MudNavLink>
+        <MudNavGroup Title="Settings" Expanded="true" Icon="@Icons.Filled.Settings">
+            <MudNavLink Href="/users" Match="NavLinkMatch.Prefix" Icon="@Icons.Filled.ManageAccounts">Users</MudNavLink>
+            <MudNavLink Href="/security" Match="NavLinkMatch.Prefix" Icon="@Icons.Filled.AccountCircle">Security</MudNavLink>
+        </MudNavGroup>
+        <MudNavLink Href="/fetchdata" Match="NavLinkMatch.Prefix" Icon="@Icons.Filled.DataObject">Fetch data</MudNavLink>
+    </MudNavMenu>
+</MudPaper>

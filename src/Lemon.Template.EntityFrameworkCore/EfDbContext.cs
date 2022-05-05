@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Lemon.Template.Domain;
+using Lemon.Template.Domain.Shared;
 using Microsoft.EntityFrameworkCore;
 
 namespace Lemon.Template.EntityFrameworkCore

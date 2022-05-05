@@ -29,6 +29,7 @@ namespace Lemon.Template.DbMigrations
             IConfiguration configuration = builder.Build();
 
             var services = new ServiceCollection();
+            services.AddTransient<IServiceCollection>(x => services);
             services.AddLogging();
             services.AddSingleton<IConfiguration>(configuration);
 

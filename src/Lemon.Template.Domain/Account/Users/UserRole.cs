@@ -1,4 +1,5 @@
 using Lemon.Template.Domain.Account.Role;
+using Lemon.Template.Domain.Shared;
 
 namespace Lemon.Template.Domain.Account.Users
 {

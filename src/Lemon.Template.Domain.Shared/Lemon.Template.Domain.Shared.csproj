@@ -11,5 +11,9 @@
   <ItemGroup>
     <Folder Include="ExceptionExtensions" />
   </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Lemon.App.Core\Lemon.App.Core.csproj" />
+  </ItemGroup>
   
 </Project>
