@@ -1,21 +1,23 @@
-using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
+using Microsoft.Extensions.Logging;
 
-namespace Lemon.Template.EntityFrameworkCore
+namespace Lemon.App.EntityFrameworkCore
 {
     public class DbContextProvider<TDbContext> : IDbContextProvider<TDbContext> where TDbContext : DbContext
     {
         private readonly IDbContextFactory<TDbContext> _contextFactory;
-        public DbContextProvider(IDbContextFactory<TDbContext> contextFactory)
+        private readonly ILogger _logger;
+        public DbContextProvider(IDbContextFactory<TDbContext> contextFactory, ILogger logger)
         {
+            _logger = logger;
             _contextFactory = contextFactory;
         }
 
         [ThreadStatic]
-        private TDbContext _dbContext;
+        private TDbContext? _dbContext;
         [ThreadStatic]
-        private IDbContextTransaction _dbContextTransaction;
+        private IDbContextTransaction? _dbContextTransaction;
         
         public TDbContext GetDbContext()
         {
@@ -23,8 +25,8 @@ namespace Lemon.Template.EntityFrameworkCore
         }
 
         public void BeginTrans()
-        { 
-            _dbContextTransaction ??= _dbContext.Database.BeginTransaction();
+        {
+            _dbContextTransaction ??= GetDbContext().Database.BeginTransaction();
         }
 
         public void Dispose()
@@ -42,12 +44,13 @@ namespace Lemon.Template.EntityFrameworkCore
                 {
                     _dbContextTransaction.Rollback();
                 }
-                throw ex;
+                _logger.LogError(ex, ex.Message);
+                throw;
             }
             finally
             {
                 _dbContextTransaction?.Dispose();
-                _dbContext.Dispose();
+                _dbContext?.Dispose();
             }
         }
     }

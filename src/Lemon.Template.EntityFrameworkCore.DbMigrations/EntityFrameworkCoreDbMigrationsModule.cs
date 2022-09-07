@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Lemon.Template.EntityFrameworkCore.DbMigrations
 {
+    [DependsOn(typeof(EntityFrameworkCoreModule))]
     public class EntityFrameworkCoreDbMigrationsModule : AppModule
     {
 
@@ -11,11 +12,11 @@ namespace Lemon.Template.EntityFrameworkCore.DbMigrations
         {
         }
 
-        public override void ConfigureServices()
+        protected override void ConfigureServices(IServiceCollection serviceCollection)
         {
             #region 自动迁移数据库
 
-            var dbContext = services.BuildServiceProvider().GetService<DbContext>();
+            var dbContext = serviceCollection.BuildServiceProvider().GetService<DbContext>();
             if (dbContext != null)
             { 
                 dbContext.Database.Migrate();

@@ -1,5 +1,4 @@
 using Lemon.App.Core;
-using Lemon.Template.Application.Contracts.Security;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Lemon.Template.Application.Contracts
@@ -14,9 +13,8 @@ namespace Lemon.Template.Application.Contracts
         /// 
         /// </summary>
         /// <returns></returns>
-        public override void ConfigureServices()
+        protected override void ConfigureServices(IServiceCollection serviceCollection)
         {
-            services.AddTransient<ICurrentUser, CurrentUser>();
         }
     }
 }

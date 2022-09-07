@@ -1,7 +1,7 @@
 using System;
 using System.Security.Claims;
 
-namespace Lemon.Template.Application.Contracts.Security;
+namespace Lemon.TaskManagementSystem.Application.Contracts.Security;
 
 public interface ICurrentUser
 {

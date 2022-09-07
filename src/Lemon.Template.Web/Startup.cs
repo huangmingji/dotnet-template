@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Lemon.App.Core;
 using Lemon.Common.Extend;
 using Lemon.Template.Web.Authentication;
 using Microsoft.AspNetCore.Builder;
@@ -46,6 +47,8 @@ namespace Lemon.Template.Web
                 });
             
             services.UseJwtBearerAuthentication();
+            services.AddApplication<WebModule>();
+            
             ConfigRedis(services);
             ConfigureCors(services);
             ConfigureSwaggerServices(services);

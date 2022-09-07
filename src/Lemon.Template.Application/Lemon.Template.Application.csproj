@@ -1,14 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <ProjectReference Include="..\Lemon.App.Core\Lemon.App.Core.csproj" />
+    <ProjectReference Include="..\..\modules\Lemon.App.Core\Lemon.App.Core.csproj" />
     <ProjectReference Include="..\Lemon.Template.Application.Contracts\Lemon.Template.Application.Contracts.csproj" />
   </ItemGroup>
   
   <ItemGroup>
-    <PackageReference Include="IdentityModel" Version="6.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.3" />
-    <PackageReference Include="Lemon.AutoMapper" Version="10.1.1" />
     <PackageReference Include="Lemon.Cache" Version="2.2.62" />
   </ItemGroup>
 

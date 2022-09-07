@@ -1,8 +1,6 @@
-using System;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 
-namespace Lemon.Template.EntityFrameworkCore
+namespace Lemon.App.EntityFrameworkCore
 {
     public interface IDbContextProvider<out TDbContext> : IDisposable where TDbContext : DbContext
     {

@@ -2,12 +2,14 @@ using System;
 using System.Linq;
 using Lemon.App.Core;
 using Lemon.AutoMapper;
+using Lemon.Template.Application.Contracts;
 using Lemon.Template.Application.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Lemon.Template.Application
 {
+    [DependsOn(typeof(ApplicationContractsModule))]
     public class ApplicationModule : AppModule
     {
         public ApplicationModule(IServiceCollection services)
@@ -19,10 +21,10 @@ namespace Lemon.Template.Application
         /// 
         /// </summary>
         /// <returns></returns>
-        public override void ConfigureServices()
+        protected override void ConfigureServices(IServiceCollection serviceCollection)
         {
             AutoMapperExtensions.AddAutoMapperProfile<ApplicationAutoMapperProfile>();
-            IConfiguration configuration = services.BuildServiceProvider().GetService<IConfiguration>();
+            IConfiguration configuration = serviceCollection.BuildServiceProvider().GetService<IConfiguration>();
             
             // services.AddTransient<ICurrentUser, NullCurrentUser>();
             
@@ -32,7 +34,7 @@ namespace Lemon.Template.Application
             {
                 var targetInterface = storeClass.ImplementedInterfaces.FirstOrDefault(x => interfaces.Contains(x));
                 if (targetInterface == null) continue;
-                services.AddScoped(targetInterface, storeClass);
+                serviceCollection.AddScoped(targetInterface, storeClass);
             }
         }
     }

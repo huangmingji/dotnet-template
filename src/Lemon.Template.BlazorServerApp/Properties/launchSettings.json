@@ -10,8 +10,6 @@
   "profiles": {
     "Lemon.Template.BlazorServerApp": {
       "commandName": "Project",
-      "dotnetRunMessages": true,
-      "launchBrowser": false,
       "applicationUrl": "http://localhost:5227",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"

@@ -1,18 +1,13 @@
-using System;
-using System.Collections.Generic;
 using System.Data.Common;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Threading.Tasks;
-using Lemon.Template.Domain.Repositories;
 using Microsoft.EntityFrameworkCore;
 
-namespace Lemon.Template.EntityFrameworkCore.Repositories
+namespace Lemon.App.EntityFrameworkCore.Repositories
 {
     public class Repository : IRepository
     {
-        private readonly IDbContextProvider<EfDbContext> _dbContextProvider;
-        public Repository(IDbContextProvider<EfDbContext> dbContextProvider)
+        private readonly IDbContextProvider<DbContext> _dbContextProvider;
+        public Repository(IDbContextProvider<DbContext> dbContextProvider)
         {
             _dbContextProvider = dbContextProvider;
         }
@@ -25,9 +20,9 @@ namespace Lemon.Template.EntityFrameworkCore.Repositories
 
     public sealed class Repository<TEntity> : IRepository<TEntity> where TEntity : class, new()
     {
-        private readonly IDbContextProvider<EfDbContext> _dbContextProvider;
+        private readonly IDbContextProvider<DbContext> _dbContextProvider;
         private readonly DbContext _dbContext;
-        public Repository(IDbContextProvider<EfDbContext> dbContextProvider)
+        public Repository(IDbContextProvider<DbContext> dbContextProvider)
         {
             _dbContextProvider = dbContextProvider;
             _dbContext = dbContextProvider.GetDbContext();
@@ -70,7 +65,7 @@ namespace Lemon.Template.EntityFrameworkCore.Repositories
             return await _dbContext.Set<TEntity>().ToListAsync();
         }
 
-        public async Task<TEntity> FindAsync(Expression<Func<TEntity, bool>> predicate, bool withDetails = true)
+        public async Task<TEntity?> FindAsync(Expression<Func<TEntity, bool>> predicate, bool withDetails = true)
         {
             if (withDetails)
             {

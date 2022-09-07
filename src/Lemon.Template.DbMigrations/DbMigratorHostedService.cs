@@ -1,9 +1,6 @@
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
-using Lemon.Template.Application;
-using Lemon.Template.EntityFrameworkCore;
-using Lemon.Template.EntityFrameworkCore.DbMigrations;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;

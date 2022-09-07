@@ -1,11 +1,7 @@
-using System;
-using System.Collections.Generic;
 using System.Data.Common;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Threading.Tasks;
 
-namespace Lemon.Template.Domain.Repositories
+namespace Lemon.App.EntityFrameworkCore.Repositories
 {
     public interface IRepository
     {
@@ -25,10 +21,10 @@ namespace Lemon.Template.Domain.Repositories
         Task DeleteAsync(TEntity entity);
 
         Task DeleteAsync(Expression<Func<TEntity, bool>> predicate);
-        
+
         Task<TEntity> GetAsync(Expression<Func<TEntity, bool>> predicate, bool withDetails = true);
-        
-        Task<TEntity> FindAsync(Expression<Func<TEntity, bool>> predicate, bool withDetails = true);
+
+        Task<TEntity?> FindAsync(Expression<Func<TEntity, bool>> predicate, bool withDetails = true);
 
         IQueryable<TEntity> Where(Expression<Func<TEntity, bool>> predicate, bool withDetails = true);
 
