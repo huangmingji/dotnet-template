@@ -3,6 +3,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\modules\Lemon.App.Core\Lemon.App.Core.csproj" />
     <ProjectReference Include="..\Lemon.Template.Domain\Lemon.Template.Domain.csproj" />
+    <ProjectReference Include="..\..\modules\Lemon.App.Application.Contracts\Lemon.App.Application.Contracts.csproj" />
   </ItemGroup>
 
   <ItemGroup>

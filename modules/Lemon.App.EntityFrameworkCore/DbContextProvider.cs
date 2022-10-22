@@ -7,10 +7,8 @@ namespace Lemon.App.EntityFrameworkCore
     public class DbContextProvider<TDbContext> : IDbContextProvider<TDbContext> where TDbContext : DbContext
     {
         private readonly IDbContextFactory<TDbContext> _contextFactory;
-        private readonly ILogger _logger;
-        public DbContextProvider(IDbContextFactory<TDbContext> contextFactory, ILogger logger)
+        public DbContextProvider(IDbContextFactory<TDbContext> contextFactory)
         {
-            _logger = logger;
             _contextFactory = contextFactory;
         }
 
@@ -44,7 +42,6 @@ namespace Lemon.App.EntityFrameworkCore
                 {
                     _dbContextTransaction.Rollback();
                 }
-                _logger.LogError(ex, ex.Message);
                 throw;
             }
             finally

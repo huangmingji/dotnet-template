@@ -5,16 +5,16 @@ using Microsoft.Extensions.Configuration;
 
 namespace Lemon.Template.EntityFrameworkCore.DbMigrations
 {
-    public class DbContextFactory : IDesignTimeDbContextFactory<EfDbContext>
+    public class DbContextFactory : IDesignTimeDbContextFactory<EfDbMigrationsContext>
     {
-        public EfDbContext CreateDbContext(string[] args)
+        public EfDbMigrationsContext CreateDbContext(string[] args)
         {
             var configuration = BuildConfiguration();
 
-            var builder = new DbContextOptionsBuilder<EfDbContext>()
+            var builder = new DbContextOptionsBuilder<EfDbMigrationsContext>()
                 .UseNpgsql(configuration.GetConnectionString("Default"));
 
-            return new EfDbContext(builder.Options);
+            return new EfDbMigrationsContext(builder.Options);
         }
         
         private static IConfigurationRoot BuildConfiguration()

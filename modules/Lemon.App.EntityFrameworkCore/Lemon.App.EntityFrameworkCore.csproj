@@ -7,12 +7,13 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.8" />
-      <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="6.0.8" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.10" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="6.0.10" />
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\Lemon.App.Core\Lemon.App.Core.csproj" />
+      <ProjectReference Include="..\Lemon.App.Domain\Lemon.App.Domain.csproj" />
     </ItemGroup>
 
 </Project>

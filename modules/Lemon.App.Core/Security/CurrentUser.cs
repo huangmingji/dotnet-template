@@ -2,7 +2,6 @@
 using System.Security.Claims;
 using IdentityModel;
 using Lemon.Common.Extend;
-using Lemon.TaskManagementSystem.Application.Contracts.Security;
 using Microsoft.AspNetCore.Http;
 
 namespace Lemon.App.Core.Security;

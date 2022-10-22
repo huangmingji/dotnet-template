@@ -1,11 +1,9 @@
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
+using Lemon.App.Authentication;
 using Lemon.App.Core;
 using Lemon.Common.Extend;
-using Lemon.Template.Web.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.CookiePolicy;
 using Microsoft.AspNetCore.Hosting;
@@ -45,21 +43,10 @@ namespace Lemon.Template.Web
                     op.SerializerSettings.Converters.Add(new Ext.DateTimeJsonConverter());
                     op.SerializerSettings.Converters.Add(new Ext.LongJsonConverter());
                 });
-            
-            services.UseJwtBearerAuthentication();
+            services.UseJwtBearerAuthentication(new List<string>());
             services.AddApplication<WebModule>();
-            
-            ConfigRedis(services);
+            //ConfigureSwaggerServices(services);
             ConfigureCors(services);
-            ConfigureSwaggerServices(services);
-        }
-
-        private void ConfigRedis(IServiceCollection services)
-        {
-            services.AddStackExchangeRedisCache(options =>
-            {
-                options.Configuration = _configuration["Redis:Configuration"];
-            });
         }
 
         private const string DefaultCorsPolicyName = "Default";
@@ -133,12 +120,12 @@ namespace Lemon.Template.Web
             {
                 endpoints.MapControllers();
             });
-            
-            app.UseSwagger();
-            app.UseSwaggerUI(options =>
-            {
-                options.SwaggerEndpoint("/swagger/v1/swagger.json", "Lemon.Template Service API");
-            });
+
+            //app.UseSwagger();
+            //app.UseSwaggerUI(options =>
+            //{
+            //    options.SwaggerEndpoint("/swagger/v1/swagger.json", "Lemon.Template Service API");
+            //});
         }
     }
 }

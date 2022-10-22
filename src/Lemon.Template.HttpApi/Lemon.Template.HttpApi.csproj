@@ -2,6 +2,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Lemon.Template.Application.Contracts\Lemon.Template.Application.Contracts.csproj" />
+    <ProjectReference Include="..\..\modules\Lemon.App.HttpApi\Lemon.App.HttpApi.csproj" />
+    <ProjectReference Include="..\..\modules\Lemon.App.Application.Contracts\Lemon.App.Application.Contracts.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

@@ -2,6 +2,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Lemon.Template.Domain.Shared\Lemon.Template.Domain.Shared.csproj" />
+    <ProjectReference Include="..\..\modules\Lemon.App.Domain\Lemon.App.Domain.csproj" />
   </ItemGroup>
   
   <ItemGroup>

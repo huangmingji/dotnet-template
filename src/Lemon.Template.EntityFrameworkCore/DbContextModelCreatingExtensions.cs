@@ -1,4 +1,4 @@
-using Lemon.Template.Domain.Account.Role;
+using Lemon.Template.Domain.Account.Roles;
 using Lemon.Template.Domain.Account.Users;
 using Microsoft.EntityFrameworkCore;
 

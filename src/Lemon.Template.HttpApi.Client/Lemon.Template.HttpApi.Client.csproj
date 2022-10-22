@@ -2,6 +2,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Lemon.Template.Application.Contracts\Lemon.Template.Application.Contracts.csproj" />
+    <ProjectReference Include="..\..\modules\Lemon.App.HttpApi.Client\Lemon.App.HttpApi.Client.csproj" />
   </ItemGroup>
 
   <ItemGroup>

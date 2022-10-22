@@ -1,7 +1,8 @@
 using System;
 using System.Collections.Generic;
+using Lemon.App.Core.ExceptionExtensions;
+using Lemon.App.Domain.Entities;
 using Lemon.Common;
-using Lemon.Template.Domain.Shared;
 
 namespace Lemon.Template.Domain.Account.Users
 {
@@ -9,7 +10,7 @@ namespace Lemon.Template.Domain.Account.Users
     /// <summary>
     /// 用户数据
     /// </summary>
-    public sealed class UserData : Entity
+    public sealed class UserData : Entity<long>
     {
         /// <summary>
         /// 账号
@@ -133,14 +134,23 @@ namespace Lemon.Template.Domain.Account.Users
             SecretKey = secretKey;
         }
 
-        public void RemoveRole(string roleId)
+        public void RemoveRole(long roleId)
         {
             UserRoles.RemoveAll(x => x.RoleId == roleId);
         }
 
-        public void AddRole(string roleId)
+        public void AddRole(long roleId)
         {
             UserRoles.Add(new UserRole(this.Id, roleId));
+        }
+
+        public void Set(string name, string account)
+        {
+            Check.NotNullOrWhiteSpace(name, nameof(name));
+            Check.NotNullOrWhiteSpace(account, nameof(account));
+
+            this.NickName = name;
+            this.Account = account;
         }
 
         public void Set(string name, string account, string email, string mobile)

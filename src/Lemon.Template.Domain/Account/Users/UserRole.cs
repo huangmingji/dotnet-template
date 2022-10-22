@@ -1,18 +1,18 @@
-using Lemon.Template.Domain.Account.Role;
-using Lemon.Template.Domain.Shared;
+using Lemon.App.Domain.Entities;
+using Lemon.Template.Domain.Account.Roles;
 
 namespace Lemon.Template.Domain.Account.Users
 {
     /// <summary>
     /// 用户角色
     /// </summary>
-    public class UserRole : Entity
+    public class UserRole : Entity<long>
     {
         public UserRole()
         {
         }
 
-        public UserRole(string userId, string roleId)
+        public UserRole(long userId, long roleId)
         {
             UserId = userId;
             RoleId = roleId;
@@ -21,12 +21,12 @@ namespace Lemon.Template.Domain.Account.Users
         /// <summary>
         /// 用户主键
         /// </summary>
-        public string UserId { get; set; }
+        public long UserId { get; set; }
         
         /// <summary>
         /// 角色主键
         /// </summary>
-        public string RoleId { get; set; }
+        public long RoleId { get; set; }
 
         public RoleData RoleData { get; set; }
     }
