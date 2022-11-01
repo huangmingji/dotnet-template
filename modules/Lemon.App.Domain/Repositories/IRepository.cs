@@ -1,12 +1,18 @@
+using System;
+using System.Collections.Generic;
 using System.Data.Common;
+using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 using Lemon.App.Domain.Entities;
+using Lemon.App.Domain.Shared.Entities;
 
 namespace Lemon.App.Domain.Repositories
 {
     public interface IRepository<TDbContext, TEntity, TKey> 
         where TDbContext : class
         where TEntity : class, IEntity<TKey>
+        where TKey : notnull
     {
         Task<TEntity> InsertAsync(TEntity entity);
 

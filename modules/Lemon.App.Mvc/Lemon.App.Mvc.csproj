@@ -2,11 +2,11 @@
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Lemon.App.Application\Lemon.App.Application.csproj" />
+    <ProjectReference Include="..\Lemon.App.Core\Lemon.App.Core.csproj" />
     <ProjectReference Include="..\Lemon.App.Authentication\Lemon.App.Authentication.csproj" />
   </ItemGroup>
 </Project>

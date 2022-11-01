@@ -1,10 +1,11 @@
 #nullable enable
+using System.Linq;
 using System.Security.Claims;
 using IdentityModel;
-using Lemon.Common.Extend;
+using Lemon.App.Core.Extend;
 using Microsoft.AspNetCore.Http;
 
-namespace Lemon.App.Core.Security;
+namespace Lemon.App.Authentication.Security;
 
 public class CurrentUser : ICurrentUser
 {

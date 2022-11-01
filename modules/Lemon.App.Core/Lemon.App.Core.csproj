@@ -1,28 +1,22 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-    <PropertyGroup>
-        <TargetFramework>net6.0</TargetFramework>
-        <ImplicitUsings>enable</ImplicitUsings>
-        <Nullable>enable</Nullable>
-    </PropertyGroup>
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+  </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="Lemon.Cache" Version="2.2.62" />
-      <PackageReference Include="Lemon.Common" Version="1.1.9" />
-    <PackageReference Include="IdentityModel" Version="6.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.10" />
+      <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+      <PackageReference Include="AutoMapper" Version="12.0.0" />
       <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.1" />
-      <PackageReference Include="Lemon.AutoMapper" Version="11.0.1" />
+      <PackageReference Include="Microsoft.Extensions.Configuration" Version="6.0.1" />
+      <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="6.0.10" />
     </ItemGroup>
 
     <ItemGroup>
       <None Remove="ExceptionExtensions\" />
-      <None Remove="Services\" />
-      <None Remove="Pagination\" />
+      <None Remove="Microsoft.Extensions.Caching.StackExchangeRedis" />
     </ItemGroup>
     <ItemGroup>
       <Folder Include="ExceptionExtensions\" />
-      <Folder Include="Services\" />
-      <Folder Include="Pagination\" />
     </ItemGroup>
 </Project>

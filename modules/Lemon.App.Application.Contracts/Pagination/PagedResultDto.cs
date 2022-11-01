@@ -1,4 +1,6 @@
-namespace Lemon.App.Core.Pagination;
+using System.Collections.Generic;
+
+namespace Lemon.App.Application.Contracts.Pagination;
 
 public class PagedResultDto<TEntityDto> where TEntityDto : class, new()
 {

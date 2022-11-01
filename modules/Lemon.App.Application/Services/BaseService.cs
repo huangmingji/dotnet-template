@@ -1,8 +1,9 @@
+using System;
 using Lemon.Common.Snowflake;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Lemon.App.Core.Services
+namespace Lemon.App.Application.Services
 {
     public class BaseService
     {

@@ -1,5 +1,5 @@
 
-namespace Lemon.App.Domain.Entities
+namespace Lemon.App.Domain.Shared.Entities
 {
     public interface IEntity<TKey>
     {

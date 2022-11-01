@@ -2,24 +2,26 @@ using System.Data.Common;
 using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Distributed;
-using Lemon.Cache;
 using Lemon.App.Domain.Entities;
 using Lemon.App.Domain.Repositories;
-using IdentityModel;
+using Lemon.App.Core.Cache;
+using System.Threading.Tasks;
+using System.Collections.Generic;
+using System;
+using System.Linq;
+using Lemon.App.Domain.Shared.Entities;
 
 namespace Lemon.App.EntityFrameworkCore.Repositories
 {
     public sealed class Repository<TDbContext, TEntity, TKey> : IRepository<TDbContext, TEntity, TKey>
         where TDbContext : DbContext
-        where TEntity : class, IEntity<TKey>, new()
+        where TEntity : class, IEntity<TKey>
         where TKey : notnull
     {
-        private readonly IDistributedCache _cache;
         private readonly IDbContextProvider<TDbContext> _dbContextProvider;
         private readonly DbContext _dbContext;
-        public Repository(IDbContextProvider<TDbContext> dbContextProvider, IDistributedCache cache)
+        public Repository(IDbContextProvider<TDbContext> dbContextProvider)
         {
-            _cache = cache;
             _dbContextProvider = dbContextProvider;
             _dbContext = dbContextProvider.GetDbContext();
         }
@@ -37,7 +39,6 @@ namespace Lemon.App.EntityFrameworkCore.Repositories
                 _dbContext.Set<TEntity>().Attach(entity);
                 _dbContext.Entry(entity).State = EntityState.Deleted;
                 await _dbContext.SaveChangesAsync();
-                await _cache.RemoveValueAsync(entity.Id.ToString());
             }
         }
 
@@ -48,7 +49,6 @@ namespace Lemon.App.EntityFrameworkCore.Repositories
             {
                 _dbContext.Set<TEntity>().Attach(entity);
                 _dbContext.Entry(entity).State = EntityState.Deleted;
-                await _cache.RemoveValueAsync(entity.Id.ToString());
             }
             await _dbContext.SaveChangesAsync();
         }
@@ -130,7 +130,6 @@ namespace Lemon.App.EntityFrameworkCore.Repositories
         {
             _dbContext.Entry(entity).State = EntityState.Modified;
             var result = await _dbContext.SaveChangesAsync();
-            await this.RemoveCacheAsync(entity.Id);
             return entity;
         }
 
@@ -141,46 +140,30 @@ namespace Lemon.App.EntityFrameworkCore.Repositories
 
         public async Task<TEntity> GetAsync(TKey id, bool withDetails = true)
         {
-            string key = $"{nameof(TEntity)}_{id}_{withDetails.ToString()}";
-            TEntity result = await _cache.GetValueAsync<TEntity>(key);
-            if(result != null) return result;
-
+            IQueryable<TEntity> entities; 
             if (withDetails)
             {
-                result = await WithDetails().Where(x=> x.Id.Equals(id)).FirstAsync();
+                entities = WithDetails();
             } 
             else 
             {
-                result = await _dbContext.Set<TEntity>().Where(x=> x.Id.Equals(id)).FirstAsync();
+                entities = _dbContext.Set<TEntity>();
             }
-            await _cache.SetValueAsync<TEntity>(key, result, TimeSpan.FromMinutes(10));
-            return result;
+            return await entities.Where(x => x.Id.Equals(id)).FirstAsync();;
         }
 
         public async Task<TEntity?> FindAsync(TKey id, bool withDetails = true)
         {
-            string key = $"{nameof(TEntity)}_{id}_{withDetails.ToString()}";
-            TEntity? result = (await _cache.GetValueAsync<TEntity>(key));
-            if(result != null) return result;
-
+            IQueryable<TEntity> entities;
             if (withDetails)
             {
-                result = await WithDetails().Where(x=> x.Id.Equals(id)).FirstOrDefaultAsync();
+                entities = WithDetails();
             }
             else
             {
-                result = await _dbContext.Set<TEntity>().Where(x=> x.Id.Equals(id)).FirstOrDefaultAsync();
+                entities = _dbContext.Set<TEntity>();
             }
-            if(result != null) await _cache.SetValueAsync<TEntity>(key, result, TimeSpan.FromMinutes(10));
-            return result;
-        }
-
-        private async Task RemoveCacheAsync(TKey id)
-        {
-            string key1 = $"{nameof(TEntity)}_{id}_true";
-            string key2 = $"{nameof(TEntity)}_{id}_false";
-            await _cache.RemoveValueAsync(key1);
-            await _cache.RemoveValueAsync(key2);
+            return await entities.Where(x => x.Id.Equals(id)).FirstOrDefaultAsync();
         }
 
         public async Task<bool> AnyAsync(Expression<Func<TEntity, bool>> expression, bool withDetails = true)

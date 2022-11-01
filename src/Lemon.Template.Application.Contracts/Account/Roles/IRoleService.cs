@@ -1,4 +1,4 @@
-using Lemon.App.Core.Services;
+using Lemon.App.Application.Contracts.Services;
 using Lemon.Template.Application.Contracts.Account.Roles.Dtos;
 using Lemon.Template.Domain.Account.Roles;
 

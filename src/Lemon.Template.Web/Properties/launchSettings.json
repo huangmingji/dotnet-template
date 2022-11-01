@@ -18,7 +18,7 @@
     "Lemon.Template.Web": {
       "commandName": "Project",
       "launchBrowser": true,
-      "applicationUrl": "http://localhost:48756",
+      "applicationUrl": "http://localhost:37950",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }

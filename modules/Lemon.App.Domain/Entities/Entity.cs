@@ -1,4 +1,7 @@
-﻿namespace Lemon.App.Domain.Entities
+﻿using System;
+using Lemon.App.Domain.Shared.Entities;
+
+namespace Lemon.App.Domain.Entities
 {
     public abstract class Entity<TKey> : IEntity<TKey> where TKey : notnull
     {

@@ -1,7 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
-using Lemon.App.Core.Security;
+using Lemon.App.Authentication.Security;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -83,7 +84,7 @@ namespace Lemon.App.Authentication
             );
             services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
             services.AddTransient<IAuthorizationHandler, PermissionHandler>();
-            services.AddScoped<ICurrentUser, CurrentUser>();
+            // services.AddScoped<ICurrentUser, CurrentUser>();
         }
     }
 }

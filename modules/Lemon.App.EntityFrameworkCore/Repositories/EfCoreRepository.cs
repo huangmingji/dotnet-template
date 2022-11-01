@@ -1,6 +1,11 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 using Lemon.App.Domain.Entities;
 using Lemon.App.Domain.Repositories;
+using Lemon.App.Domain.Shared.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace Lemon.App.EntityFrameworkCore.Repositories
@@ -8,7 +13,7 @@ namespace Lemon.App.EntityFrameworkCore.Repositories
 
     public class EfCoreRepository<TDbContext, TEntity, TKey> : IEfCoreRepository<TEntity, TKey>
         where TDbContext : DbContext
-        where TEntity : class, IEntity<TKey>, new()
+        where TEntity : class, IEntity<TKey>
         where TKey : notnull
     {
         private IRepository<TDbContext, TEntity, TKey> _repository;

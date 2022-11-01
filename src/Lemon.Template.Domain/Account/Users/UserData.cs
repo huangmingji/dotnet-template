@@ -115,17 +115,18 @@ namespace Lemon.Template.Domain.Account.Users
         {
         }
 
-        public UserData(string password, string name, string email)
-            : this(null, password, name, null, email)
+        public UserData(long id, string password, string name, string email)
+            : this(id, null, password, name, null, email)
         {
 
         }
 
-        public UserData(string account, string password, string name = "", string mobile = null, string email = null)
+        public UserData(long id, string account, string password, string name = "", string mobile = null, string email = null)
         {
             Check.NotNullOrWhiteSpace(name, nameof(name));
             Check.NotNullOrWhiteSpace(password, nameof(password));
 
+            Id = id;
             NickName = name;
             Account = string.IsNullOrWhiteSpace(account) ? Guid.NewGuid().ToString("N") : account;
             Mobile = mobile;

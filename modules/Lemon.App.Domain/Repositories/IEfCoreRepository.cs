@@ -1,10 +1,14 @@
+using System;
+using System.Collections.Generic;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 using Lemon.App.Domain.Entities;
+using Lemon.App.Domain.Shared.Entities;
 
 namespace Lemon.App.Domain.Repositories
 {
     public interface IEfCoreRepository<TEntity, TKey> 
-        where TEntity : class, IEntity<TKey>, new()
+        where TEntity : class, IEntity<TKey>
         where TKey : notnull
     {
         Task DeleteAsync(TKey id);

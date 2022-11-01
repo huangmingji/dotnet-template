@@ -1,6 +1,6 @@
 using System.Security.Claims;
 
-namespace Lemon.App.Core.Security;
+namespace Lemon.App.Authentication.Security;
 
 public interface ICurrentUser
 {

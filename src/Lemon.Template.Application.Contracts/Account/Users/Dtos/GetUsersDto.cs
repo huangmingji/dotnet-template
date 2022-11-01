@@ -1,5 +1,4 @@
-
-using Lemon.App.Core.Pagination;
+using Lemon.App.Application.Contracts.Pagination;
 
 namespace Lemon.Template.Application.Contracts.Account.Users.Dtos;
 

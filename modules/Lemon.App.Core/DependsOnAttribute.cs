@@ -1,3 +1,5 @@
+using System;
+
 namespace Lemon.App.Core;
 
 [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]

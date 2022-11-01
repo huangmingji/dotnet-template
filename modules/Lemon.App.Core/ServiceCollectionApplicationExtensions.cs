@@ -1,5 +1,6 @@
-using Lemon.App.Core.Services;
-using Microsoft.AspNetCore.Http;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Lemon.App.Core;
@@ -18,7 +19,7 @@ public static class ServiceCollectionApplicationExtensions
         object[] attributeObjects = startupModuleType.GetCustomAttributes(typeof(DependsOnAttribute), true);
         foreach (DependsOnAttribute attribute in attributeObjects)
         {
-            List<Type> types = attribute.GetDependedTypes().ToList();
+            var types = attribute.GetDependedTypes().ToList();
             _types.AddRange(types);
             foreach (var type in types)
             {
@@ -35,29 +36,7 @@ public static class ServiceCollectionApplicationExtensions
             services.AddSingleton(type);
             var appModule = services.BuildServiceProvider().GetService(type) as IAppModule;
             appModule?.AppInit(services);
-            services.AddApplicationServices(type);
         }
         return services;
     }
-
-    private static IServiceCollection AddApplicationServices(this IServiceCollection serviceCollection, Type moduleType)
-    {
-        var assemblies = System.Reflection.Assembly.GetAssembly(moduleType) ?? throw new NullReferenceException();
-        List<Type> types = new List<Type> { typeof(ApplicationService), typeof(TransientService) };
-        foreach (var definedType in assemblies.DefinedTypes.Where(x => x.IsClass && x.BaseType != null && types.Contains(x.BaseType)))
-        {
-            var targetInterface = definedType.ImplementedInterfaces.FirstOrDefault();
-            if (targetInterface == null) continue;
-            if (definedType.BaseType == typeof(ApplicationService))
-            {
-                serviceCollection.AddScoped(targetInterface, definedType);
-            }
-            else if (definedType.BaseType == typeof(TransientService))
-            {
-                serviceCollection.AddTransient(targetInterface, definedType);
-            }
-        }
-        return serviceCollection;
-    }
-
 }

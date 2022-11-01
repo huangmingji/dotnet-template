@@ -1,5 +1,4 @@
-﻿using System;
-using Lemon.Common.Extend;
+﻿using Lemon.App.Core.Extend;
 using System.Data;
 
 namespace Lemon.App.Core.ExceptionExtensions

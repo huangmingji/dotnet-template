@@ -3,48 +3,35 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Lemon.Common.Extend;
-using Lemon.App.Core.Services;
-using Lemon.AutoMapper;
 using Lemon.Template.Application.Contracts;
 using Lemon.Template.Application.Contracts.Account.Users.Dtos;
 using Lemon.Template.Domain.Account.Users;
 using Lemon.Template.Domain.Repositories;
-using Lemon.App.Core.Pagination;
+using Lemon.App.Core.AutoMapper;
+using Lemon.App.Application.Services;
+using Lemon.App.Application.Contracts.Pagination;
 
 namespace Lemon.Template.Application.Services.Account;
 
-public class UserService : ApplicationService, IUserService
+public class UserService : DefaultApplicationService<UserData, UserDataDto, long, CreateOrUpdateUserDto, GetUsersDto>, IUserService
 {
     private readonly IUserRepository _userRepository;
-    public UserService(IServiceProvider serviceProvider, IUserRepository userRepository) : base(serviceProvider)
+    public UserService(IServiceProvider serviceProvider, IUserRepository userRepository) : base(serviceProvider, userRepository)
     {
         _userRepository = userRepository;
     }
 
-    public async Task<UserDataDto> CreateAsync(CreateOrUpdateUserDto input)
+    protected override UserData FillCreateEntity(CreateOrUpdateUserDto input)
     {
-        var data = new UserData(input.Account, input.Password, input.Name);
-        var result = await _userRepository.InsertAsync(data);
-        return ObjectMapper.Map<UserData, UserDataDto>(result);
+        return new UserData(SnowflakeIdGenerator.NextId(), input.Account, input.Password, input.Name);
     }
 
-    public async Task DeleteAsync(long id)
+    protected override void FillUpdateEntity(CreateOrUpdateUserDto input, ref UserData entity)
     {
-        await _userRepository.DeleteAsync(id);
+        entity.Set(input.Name, input.Account);
     }
 
-    public async Task DeleteManyAsync(IEnumerable<long> ids)
-    {
-        await _userRepository.DeleteManyAsync(ids);
-    }
-
-    public async Task<UserDataDto> GetAsync(long id)
-    {
-        var userData = await _userRepository.GetAsync(id);
-        return ObjectMapper.Map<UserData, UserDataDto>(userData);
-    }
-
-    public async Task<PagedResultDto<UserDataDto>> GetListAsync(GetUsersDto input)
+    protected override Expression<Func<UserData, bool>> GetExpression(GetUsersDto input)
     {
         Expression<Func<UserData, bool>> expression = ExtLinq.True<UserData>();
         if (!input.Account.IsNullOrWhiteSpace())
@@ -55,20 +42,14 @@ public class UserService : ApplicationService, IUserService
         {
             expression = expression.And(x => x.NickName == input.Name);
         }
-        var total = await _userRepository.CountAsync(expression);
-        var data = await _userRepository.FindListAsync(expression, input.PageIndex, input.PageSize);
-        return new PagedResultDto<UserDataDto>()
+        if (!input.Account.IsNullOrWhiteSpace())
         {
-            Total = total,
-            Data = ObjectMapper.Map<List<UserData>, List<UserDataDto>>(data)
-        };
-    }
-
-    public async Task<UserDataDto> UpdateAsync(long id, CreateOrUpdateUserDto input)
-    {
-        var userData = await _userRepository.GetAsync(id);
-        userData.Set(input.Name, input.Account);
-        var result = await _userRepository.UpdateAsync(userData);
-        return ObjectMapper.Map<UserData, UserDataDto>(result);
+            expression = expression.And(x => x.Account == input.Account);
+        }
+        if (!input.Name.IsNullOrWhiteSpace())
+        {
+            expression = expression.And(x => x.NickName == input.Name);
+        }
+        return expression;
     }
 }

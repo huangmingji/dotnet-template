@@ -1,3 +1,6 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using Lemon.App.EntityFrameworkCore.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -16,9 +19,12 @@ public static class ServiceCollectionEntityFramworkCoreExtensions
         List<string> types = new List<string> { typeof(EfCoreRepository<,,>).Name};
         foreach (var definedType in assemblies.DefinedTypes.Where(x => x.IsClass && x.BaseType != null && types.Contains(x.BaseType.Name)))
         {
-            var targetInterface = definedType.ImplementedInterfaces.LastOrDefault();
-            if (targetInterface == null) continue;
-            serviceCollection.AddScoped(targetInterface, definedType);
+            var targetInterfaces = definedType.ImplementedInterfaces;
+            if (!targetInterfaces.Any()) continue;
+            foreach (var targetInterface in targetInterfaces)
+            {
+                serviceCollection.AddScoped(targetInterface, definedType);
+            }
         }
     }
 }

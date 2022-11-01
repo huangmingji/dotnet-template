@@ -2,8 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Lemon.App.Core.Pagination;
-using Lemon.App.Core.Services;
+using Lemon.App.Application.Contracts.Pagination;
+using Lemon.App.Application.Services;
 using Lemon.Template.Application.Contracts;
 using Lemon.Template.Application.Contracts.Account.Roles.Dtos;
 using Lemon.Template.Domain.Account.Roles;
