@@ -60,14 +60,14 @@ namespace Lemon.App.Application.Services
             return ObjectMapper.Map<TEntity, TEntityDto>(data);
         }
 
-        protected virtual Expression<Func<TEntity, bool>> GetExpression(TGetListParamsDto input)
+        protected virtual Expression<Func<TEntity, bool>> GetListExpression(TGetListParamsDto input)
         {
             return ExtLinq.True<TEntity>();
         }
 
         public async Task<PagedResultDto<TEntityDto>> GetListAsync(TGetListParamsDto input)
         {
-            var expression = GetExpression(input);
+            var expression = GetListExpression(input);
             var total = await _repository.CountAsync(expression);
             var data = await _repository.FindListAsync(expression, input.PageIndex, input.PageSize);
             return new PagedResultDto<TEntityDto>() {

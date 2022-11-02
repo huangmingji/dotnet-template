@@ -31,7 +31,7 @@ public class UserService : DefaultApplicationService<UserData, UserDataDto, long
         entity.Set(input.Name, input.Account);
     }
 
-    protected override Expression<Func<UserData, bool>> GetExpression(GetUsersDto input)
+    protected override Expression<Func<UserData, bool>> GetListExpression(GetUsersDto input)
     {
         Expression<Func<UserData, bool>> expression = ExtLinq.True<UserData>();
         if (!input.Account.IsNullOrWhiteSpace())
