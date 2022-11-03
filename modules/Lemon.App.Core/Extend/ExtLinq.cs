@@ -47,9 +47,27 @@ namespace Lemon.App.Core.Extend
             return first.Compose(second, Expression.AndAlso);
         }
 
+        public static Expression<Func<T, bool>> AndIf<T>(this Expression<Func<T, bool>> first, bool condition, Expression<Func<T, bool>> second)
+        {
+            if(condition)
+            {
+                return first.Compose(second, Expression.AndAlso);
+            }
+            return first;
+        }
+
         public static Expression<Func<T, bool>> Or<T>(this Expression<Func<T, bool>> first, Expression<Func<T, bool>> second)
         {
             return first.Compose(second, Expression.OrElse);
+        }
+
+        public static Expression<Func<T, bool>> OrIf<T>(this Expression<Func<T, bool>> first, bool condition, Expression<Func<T, bool>> second)
+        {
+            if(condition)
+            {
+                return first.Compose(second, Expression.OrElse);
+            }
+            return first;
         }
 
         public static Expression<T> Compose<T>(this Expression<T> first, Expression<T> second, Func<Expression, Expression, Expression> merge)
