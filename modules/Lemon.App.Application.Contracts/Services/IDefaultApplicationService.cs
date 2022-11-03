@@ -4,13 +4,14 @@ using Lemon.App.Domain.Shared.Entities;
 
 namespace Lemon.App.Application.Contracts.Services
 {
-    public interface IDefaultApplicationService<TEntity, TEntityDto, TKey, TCreateOrUpdateParamsDto, TGetListParamsDto>
-        : IApplicationService<TEntityDto, TKey, TCreateOrUpdateParamsDto, TGetListParamsDto>
+    public interface IDefaultApplicationService<TEntity, TEntityDto, TKey, TCreateOrUpdateParamsDto, TGetPageListParamsDto, TGetListParamsDto>
+        : IApplicationService<TEntityDto, TKey, TCreateOrUpdateParamsDto, TGetPageListParamsDto, TGetListParamsDto>
         where TEntity : class, IEntity<TKey>, new()
         where TEntityDto : class, new()
         where TKey : notnull
         where TCreateOrUpdateParamsDto : class, new()
-        where TGetListParamsDto : class, IPagedRequestDto, new()
+        where TGetPageListParamsDto : class, IPagedRequestDto, new()
+        where TGetListParamsDto : class, new()
     {
     }
 }

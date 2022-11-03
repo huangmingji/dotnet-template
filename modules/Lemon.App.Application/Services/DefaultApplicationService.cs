@@ -1,25 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
-using System.Runtime.Serialization;
 using System.Threading.Tasks;
 using Lemon.App.Application.Contracts.Pagination;
 using Lemon.App.Application.Contracts.Services;
 using Lemon.App.Core.AutoMapper;
 using Lemon.App.Core.Extend;
-using Lemon.App.Domain.Entities;
 using Lemon.App.Domain.Repositories;
 using Lemon.App.Domain.Shared.Entities;
 
 namespace Lemon.App.Application.Services
 {
-    public class DefaultApplicationService<TEntity, TEntityDto, TKey, TCreateOrUpdateParamsDto, TGetListParamsDto>
-        : BaseService, IDefaultApplicationService<TEntity, TEntityDto, TKey, TCreateOrUpdateParamsDto, TGetListParamsDto>
+    public class DefaultApplicationService<TEntity, TEntityDto, TKey, TCreateOrUpdateParamsDto, TGetPageListParamsDto, TGetListParamsDto>
+        : BaseService, IDefaultApplicationService<TEntity, TEntityDto, TKey, TCreateOrUpdateParamsDto, TGetPageListParamsDto, TGetListParamsDto>
         where TEntity : class, IEntity<TKey>, new()
         where TEntityDto : class, new()
         where TKey : notnull
         where TCreateOrUpdateParamsDto : class, new()
-        where TGetListParamsDto : class, IPagedRequestDto, new()
+        where TGetPageListParamsDto : class, IPagedRequestDto, new()
+        where TGetListParamsDto : class, new()
     {
 
         private readonly IEfCoreRepository<TEntity, TKey> _repository;
@@ -60,14 +59,14 @@ namespace Lemon.App.Application.Services
             return ObjectMapper.Map<TEntity, TEntityDto>(data);
         }
 
-        protected virtual Expression<Func<TEntity, bool>> GetListExpression(TGetListParamsDto input)
+        protected virtual Expression<Func<TEntity, bool>> GetPageListExpression(TGetPageListParamsDto input)
         {
             return ExtLinq.True<TEntity>();
         }
 
-        public async Task<PagedResultDto<TEntityDto>> GetListAsync(TGetListParamsDto input)
+        public async Task<PagedResultDto<TEntityDto>> GetPageListAsync(TGetPageListParamsDto input)
         {
-            var expression = GetListExpression(input);
+            var expression = GetPageListExpression(input);
             var total = await _repository.CountAsync(expression);
             var data = await _repository.FindListAsync(expression, input.PageIndex, input.PageSize);
             return new PagedResultDto<TEntityDto>() {
@@ -86,6 +85,18 @@ namespace Lemon.App.Application.Services
             FillUpdateEntity(input, ref data);
             var result = await _repository.UpdateAsync(data);
             return ObjectMapper.Map<TEntity, TEntityDto>(data);
+        }
+
+
+        protected virtual Expression<Func<TEntity, bool>> GetListExpression(TGetListParamsDto input)
+        {
+            return ExtLinq.True<TEntity>();
+        }
+        public async Task<List<TEntityDto>> GetListAsync(TGetListParamsDto input)
+        {
+            var expression = GetListExpression(input);
+            var data = await _repository.FindListAsync(expression);
+            return ObjectMapper.Map<List<TEntity>, List<TEntityDto>>(data);
         }
     }
 }

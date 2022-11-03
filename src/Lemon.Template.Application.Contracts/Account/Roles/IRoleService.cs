@@ -4,7 +4,7 @@ using Lemon.Template.Domain.Account.Roles;
 
 namespace Lemon.Template.Application.Contracts;
 
-public interface IRoleService: IApplicationService<RoleData, long, CreateOrUpdateRoleDto, GetRolesDto>
+public interface IRoleService: IApplicationService<RoleData, long, CreateOrUpdateRoleDto, GetRolePageListParamsDto, GetRoleListParamsDto>
 {
 
 }

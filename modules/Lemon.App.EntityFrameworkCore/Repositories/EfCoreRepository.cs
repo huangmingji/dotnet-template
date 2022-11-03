@@ -66,5 +66,10 @@ namespace Lemon.App.EntityFrameworkCore.Repositories
         {
             return await _repository.AnyAsync(expression, includeDetails);
         }
+
+        public async Task<List<TEntity>> FindListAsync(Expression<Func<TEntity, bool>> expression, bool includeDetails = true)
+        {
+            return await _repository.Where(expression, includeDetails).ToListAsync();
+        }
     }
 }

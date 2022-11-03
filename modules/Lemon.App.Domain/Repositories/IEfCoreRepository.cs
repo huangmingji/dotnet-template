@@ -20,6 +20,8 @@ namespace Lemon.App.Domain.Repositories
         Task<TEntity> GetAsync(TKey id, bool includeDetails = true);
 
         Task<List<TEntity>> FindListAsync(Expression<Func<TEntity, bool>> expression, int pageIndex, int pageSize, bool includeDetails = true);
+
+        Task<List<TEntity>> FindListAsync(Expression<Func<TEntity, bool>> expression, bool includeDetails = true);
         
         Task<int> CountAsync(Expression<Func<TEntity, bool>> expression, bool includeDetails = true);
 

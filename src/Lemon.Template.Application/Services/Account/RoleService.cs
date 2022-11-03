@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Lemon.App.Application.Contracts.Pagination;
+using Lemon.App.Application.Contracts.Services;
 using Lemon.App.Application.Services;
 using Lemon.Template.Application.Contracts;
 using Lemon.Template.Application.Contracts.Account.Roles.Dtos;
@@ -36,12 +37,22 @@ public class RoleService : ApplicationService, IRoleService
         throw new NotImplementedException();
     }
 
-    public Task<PagedResultDto<RoleData>> GetListAsync(GetRolesDto input)
+    public Task<PagedResultDto<RoleData>> GetListAsync(GetRoleListParamsDto input)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<PagedResultDto<RoleData>> GetPageListAsync(GetRolePageListParamsDto input)
     {
         throw new NotImplementedException();
     }
 
     public Task<RoleData> UpdateAsync(long id, CreateOrUpdateRoleDto input)
+    {
+        throw new NotImplementedException();
+    }
+
+    Task<List<RoleData>> IApplicationService<RoleData, long, CreateOrUpdateRoleDto, GetRolePageListParamsDto, GetRoleListParamsDto>.GetListAsync(GetRoleListParamsDto input)
     {
         throw new NotImplementedException();
     }
