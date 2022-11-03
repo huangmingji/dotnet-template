@@ -12,7 +12,7 @@ using Lemon.App.Domain.Shared.Entities;
 namespace Lemon.App.Application.Services
 {
     public class DefaultApplicationService<TEntity, TEntityDto, TKey, TCreateOrUpdateParamsDto, TGetPageListParamsDto, TGetListParamsDto>
-        : BaseService, IDefaultApplicationService<TEntity, TEntityDto, TKey, TCreateOrUpdateParamsDto, TGetPageListParamsDto, TGetListParamsDto>
+        : BaseService, IDefaultApplicationService<TEntityDto, TKey, TCreateOrUpdateParamsDto, TGetPageListParamsDto, TGetListParamsDto>
         where TEntity : class, IEntity<TKey>, new()
         where TEntityDto : class, new()
         where TKey : notnull

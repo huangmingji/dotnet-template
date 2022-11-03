@@ -1,12 +1,9 @@
-﻿using System;
-using Lemon.App.Application.Contracts.Pagination;
-using Lemon.App.Domain.Shared.Entities;
+﻿using Lemon.App.Application.Contracts.Pagination;
 
 namespace Lemon.App.Application.Contracts.Services
 {
-    public interface IDefaultApplicationService<TEntity, TEntityDto, TKey, TCreateOrUpdateParamsDto, TGetPageListParamsDto, TGetListParamsDto>
+    public interface IDefaultApplicationService<TEntityDto, TKey, TCreateOrUpdateParamsDto, TGetPageListParamsDto, TGetListParamsDto>
         : IApplicationService<TEntityDto, TKey, TCreateOrUpdateParamsDto, TGetPageListParamsDto, TGetListParamsDto>
-        where TEntity : class, IEntity<TKey>, new()
         where TEntityDto : class, new()
         where TKey : notnull
         where TCreateOrUpdateParamsDto : class, new()
