@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using Lemon.App.Application.Contracts.Pagination;
 using Lemon.Template.Application.Contracts;
 using Lemon.Template.Application.Contracts.Account.Users.Dtos;
 using Microsoft.AspNetCore.Mvc;
@@ -16,9 +17,12 @@ public class UsersController : Controller
         _userService = userService;
     }
 
-    [HttpGet("{id}")]
-    public async Task<UserDataDto> GetAsync(long id)
+    [HttpGet()]
+    public async Task<PagedResultDto<UserDataDto>> GetAsync()
     {
-        return await _userService.GetAsync(id);
+        return await _userService.GetPageListAsync(new GetUserPageListParamsDto() {
+            PageIndex = 1,
+            PageSize = 10
+        });
     }
 }
