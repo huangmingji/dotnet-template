@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using Lemon.App.Domain.Entities;
 using Lemon.App.Domain.Shared.Entities;
 
 namespace Lemon.App.Domain.Repositories
@@ -19,7 +18,8 @@ namespace Lemon.App.Domain.Repositories
 
         Task<TEntity> GetAsync(TKey id, bool includeDetails = true);
 
-        Task<List<TEntity>> FindListAsync(Expression<Func<TEntity, bool>> expression, int pageIndex, int pageSize, bool includeDetails = true);
+        List<TEntity> FindList(Expression<Func<TEntity, bool>> expression, int pageIndex, int pageSize, bool includeDetails = true, 
+                    Func<TEntity, Object> orderBy = null, Func<TEntity, Object> orderByDescending = null);
 
         Task<List<TEntity>> FindListAsync(Expression<Func<TEntity, bool>> expression, bool includeDetails = true);
         

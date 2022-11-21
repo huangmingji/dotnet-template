@@ -36,24 +36,24 @@ namespace Lemon.App.Application.Services
             return default(TEntity);
         }
 
-        public async Task<TEntityDto> CreateAsync(TCreateOrUpdateParamsDto input)
+        public virtual async Task<TEntityDto> CreateAsync(TCreateOrUpdateParamsDto input)
         {
             var data = FillCreateEntity(input);
             var result = await _repository.InsertAsync(data);
             return ObjectMapper.Map<TEntity, TEntityDto>(result);
         }
 
-        public async Task DeleteAsync(TKey id)
+        public virtual async Task DeleteAsync(TKey id)
         {
             await _repository.DeleteAsync(id);
         }
 
-        public async Task DeleteManyAsync(IEnumerable<TKey> ids)
+        public virtual async Task DeleteManyAsync(IEnumerable<TKey> ids)
         {
             await _repository.DeleteManyAsync(ids);
         }
 
-        public async Task<TEntityDto> GetAsync(TKey id)
+        public virtual async Task<TEntityDto> GetAsync(TKey id)
         {
             var data = await _repository.GetAsync(id);
             return ObjectMapper.Map<TEntity, TEntityDto>(data);
@@ -64,11 +64,21 @@ namespace Lemon.App.Application.Services
             return ExtLinq.True<TEntity>();
         }
 
-        public async Task<PagedResultDto<TEntityDto>> GetPageListAsync(TGetPageListParamsDto input)
+        protected virtual Func<TEntity, Object> GetPageListOrderBy()
+        {
+            return null;
+        }
+
+        protected virtual Func<TEntity, Object> GetPageListOrderByDescending()
+        {
+            return null;
+        }
+
+        public virtual async Task<PagedResultDto<TEntityDto>> GetPageListAsync(TGetPageListParamsDto input)
         {
             var expression = GetPageListExpression(input);
             var total = await _repository.CountAsync(expression);
-            var data = await _repository.FindListAsync(expression, input.PageIndex, input.PageSize);
+            var data = _repository.FindList(expression, input.PageIndex, input.PageSize, true, GetPageListOrderBy(), GetPageListOrderByDescending());
             return new PagedResultDto<TEntityDto>() {
                 Total = total,
                 Data = ObjectMapper.Map<List<TEntity>, List<TEntityDto>>(data)
@@ -79,7 +89,7 @@ namespace Lemon.App.Application.Services
         {
         }
 
-        public async Task<TEntityDto> UpdateAsync(TKey id, TCreateOrUpdateParamsDto input)
+        public virtual async Task<TEntityDto> UpdateAsync(TKey id, TCreateOrUpdateParamsDto input)
         {
             var data = await _repository.GetAsync(id);
             FillUpdateEntity(input, ref data);
@@ -92,7 +102,8 @@ namespace Lemon.App.Application.Services
         {
             return ExtLinq.True<TEntity>();
         }
-        public async Task<List<TEntityDto>> GetListAsync(TGetListParamsDto input)
+        
+        public virtual async Task<List<TEntityDto>> GetListAsync(TGetListParamsDto input)
         {
             var expression = GetListExpression(input);
             var data = await _repository.FindListAsync(expression);

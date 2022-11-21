@@ -71,4 +71,9 @@ public class UserService
         }
         return expression;
     }
+
+    protected override Func<UserData, object> GetPageListOrderByDescending()
+    {
+        return new Func<UserData, object>(x=> x.AddTime);
+    }
 }

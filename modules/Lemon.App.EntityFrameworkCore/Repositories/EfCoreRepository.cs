@@ -42,9 +42,19 @@ namespace Lemon.App.EntityFrameworkCore.Repositories
             return await _repository.GetAsync(x => x.Id.Equals(id), includeDetails);
         }
 
-        public virtual async Task<List<TEntity>> FindListAsync(Expression<Func<TEntity, bool>> expression, int pageIndex, int pageSize, bool includeDetails = true)
+        public virtual List<TEntity> FindList(Expression<Func<TEntity, bool>> expression, int pageIndex, int pageSize, bool includeDetails = true,
+                    Func<TEntity, Object> orderBy = null, Func<TEntity, Object> orderByDescending = null)
         {
-            return await _repository.Where(expression, includeDetails).Skip(pageSize * (pageIndex - 1)).Take(pageSize).ToListAsync();
+            IEnumerable<TEntity> queryable = _repository.Where(expression, includeDetails);
+            if (orderBy != null)
+            {
+                queryable = queryable.OrderBy(orderBy);
+            }
+            if(orderByDescending != null)
+            {
+                queryable = queryable.OrderByDescending(orderByDescending);
+            }
+            return queryable.Skip(pageSize * (pageIndex - 1)).Take(pageSize).ToList();
         }
 
         public virtual async Task<int> CountAsync(Expression<Func<TEntity, bool>> expression, bool includeDetails = true)
