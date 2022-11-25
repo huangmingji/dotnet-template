@@ -10,12 +10,13 @@ using System.Collections.Generic;
 using System;
 using System.Linq;
 using Lemon.App.Domain.Shared.Entities;
+using Lemon.App.Core.ExceptionExtensions;
 
 namespace Lemon.App.EntityFrameworkCore.Repositories
 {
     public sealed class Repository<TDbContext, TEntity, TKey> : IRepository<TDbContext, TEntity, TKey>
         where TDbContext : DbContext
-        where TEntity : class, IEntity<TKey>
+        where TEntity : class, IEntity<TKey>, new()
         where TKey : notnull
     {
         private readonly IDbContextProvider<TDbContext> _dbContextProvider;
@@ -24,6 +25,12 @@ namespace Lemon.App.EntityFrameworkCore.Repositories
         {
             _dbContextProvider = dbContextProvider;
             _dbContext = dbContextProvider.GetDbContext();
+        }
+
+
+        public TDbContext GetDbContext()
+        {
+            return _dbContextProvider.GetDbContext();
         }
 
         private async Task<int> SaveChangesAsync()
@@ -55,11 +62,13 @@ namespace Lemon.App.EntityFrameworkCore.Repositories
 
         public async Task<TEntity> GetAsync(Expression<Func<TEntity, bool>> predicate, bool withDetails = true)
         {
-            if (withDetails)
+            IQueryable<TEntity> queryable = withDetails ? WithDetails() : _dbContext.Set<TEntity>();
+            var data = await _dbContext.Set<TEntity>().Where(predicate).FirstOrDefaultAsync();
+            if (data == null)
             {
-                return await WithDetails().Where(predicate).FirstAsync();
+                throw new EntityNotFoundException();
             }
-            return await _dbContext.Set<TEntity>().Where(predicate).FirstAsync();
+            return data;
         }
 
         public async Task<List<TEntity>> FindAllAsync(bool withDetails = true)
@@ -89,6 +98,21 @@ namespace Lemon.App.EntityFrameworkCore.Repositories
             return await _dbContext.Set<TEntity>().Where(predicate).ToListAsync();
         }
 
+        public List<TEntity> FindList(Expression<Func<TEntity, bool>> expression, int pageIndex, int pageSize, bool includeDetails = true,
+                    Func<TEntity, Object> orderBy = null, Func<TEntity, Object> orderByDescending = null)
+        {
+            IEnumerable<TEntity> queryable = this.Where(expression, includeDetails);
+            if (orderBy != null)
+            {
+                queryable = queryable.OrderBy(orderBy);
+            }
+            if (orderByDescending != null)
+            {
+                queryable = queryable.OrderByDescending(orderByDescending);
+            }
+            return queryable.Skip(pageSize * (pageIndex - 1)).Take(pageSize).ToList();
+        }
+
         public async Task<List<TEntity>> FindListAsync(string sql)
         {
             return await _dbContext.Set<TEntity>().FromSqlRaw(sql).ToListAsync();
@@ -106,7 +130,7 @@ namespace Lemon.App.EntityFrameworkCore.Repositories
             return entity;
         }
 
-        public async Task<IEnumerable<TEntity>> InsertAsync(IEnumerable<TEntity> entities)
+        public async Task<List<TEntity>> InsertAsync(List<TEntity> entities)
         {
             foreach (var entity in entities)
             {
@@ -140,16 +164,13 @@ namespace Lemon.App.EntityFrameworkCore.Repositories
 
         public async Task<TEntity> GetAsync(TKey id, bool withDetails = true)
         {
-            IQueryable<TEntity> entities; 
-            if (withDetails)
+            IQueryable<TEntity> queryable = withDetails ? WithDetails() : _dbContext.Set<TEntity>();
+            var data = await _dbContext.Set<TEntity>().Where(x => x.Id.Equals(id)).FirstOrDefaultAsync();
+            if (data == null)
             {
-                entities = WithDetails();
-            } 
-            else 
-            {
-                entities = _dbContext.Set<TEntity>();
+                throw new EntityNotFoundException();
             }
-            return await entities.Where(x => x.Id.Equals(id)).FirstAsync();;
+            return data;
         }
 
         public async Task<TEntity?> FindAsync(TKey id, bool withDetails = true)
@@ -169,6 +190,11 @@ namespace Lemon.App.EntityFrameworkCore.Repositories
         public async Task<bool> AnyAsync(Expression<Func<TEntity, bool>> expression, bool withDetails = true)
         {
             return await Where(expression, withDetails).AnyAsync(expression);
+        }
+
+        public async Task<int> CountAsync(Expression<Func<TEntity, bool>> expression, bool withDetails = true)
+        {
+            return await Where(expression, withDetails).CountAsync();
         }
     }
 }

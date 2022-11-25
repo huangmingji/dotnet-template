@@ -21,11 +21,11 @@ namespace Lemon.App.Application.Services
         where TGetListParamsDto : class, new()
     {
 
-        private readonly IEfCoreRepository<TEntity, TKey> _repository;
+        private readonly IAppRepository<TEntity, TKey> _repository;
 
         public DefaultApplicationService(
             IServiceProvider serviceProvider,
-            IEfCoreRepository<TEntity, TKey> repository)
+            IAppRepository<TEntity, TKey> repository)
             : base(serviceProvider)
         {
             _repository = repository;

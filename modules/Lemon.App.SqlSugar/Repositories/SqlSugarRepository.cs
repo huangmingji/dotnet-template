@@ -6,18 +6,18 @@ using System.Threading.Tasks;
 using Lemon.App.Domain.Entities;
 using Lemon.App.Domain.Repositories;
 using Lemon.App.Domain.Shared.Entities;
-using Microsoft.EntityFrameworkCore;
+using Lemon.App.SqlSugar;
 
 namespace Lemon.App.EntityFrameworkCore.Repositories
 {
 
-    public class EfCoreRepository<TDbContext, TEntity, TKey> : IAppRepository<TEntity, TKey>
+    public class SqlSugarRepository<TDbContext, TEntity, TKey> : IAppRepository<TEntity, TKey>
         where TDbContext : DbContext
         where TEntity : class, IEntity<TKey>, new()
         where TKey : notnull
     {
         private IRepository<TDbContext, TEntity, TKey> _repository;
-        public EfCoreRepository(IRepository<TDbContext, TEntity, TKey> repository)
+        public SqlSugarRepository(IRepository<TDbContext, TEntity, TKey> repository)
         {
             _repository = repository;
         }

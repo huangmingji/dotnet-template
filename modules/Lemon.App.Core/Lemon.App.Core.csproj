@@ -6,7 +6,6 @@
 
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <RunWithWarnings>true</RunWithWarnings>
-    <AssemblyName></AssemblyName>
   </PropertyGroup>
     <ItemGroup>
       <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />

@@ -3,7 +3,7 @@ using Lemon.Template.Domain.Account.Roles;
 
 namespace Lemon.Template.Domain.Repositories;
 
-public interface IRoleRepository : IEfCoreRepository<RoleData, long>
+public interface IRoleRepository : IAppRepository<RoleData, long>
 {
 
 }
