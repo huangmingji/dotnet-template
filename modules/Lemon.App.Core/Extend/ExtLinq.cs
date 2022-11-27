@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 
 namespace Lemon.App.Core.Extend
 {
-    public static partial class ExtLinq
+    public static partial class Expressionable
     {
         public static Expression Property(this Expression expression, string propertyName)
         {
@@ -32,14 +32,9 @@ namespace Lemon.App.Core.Extend
             return Expression.Lambda<T>(body, parameters);
         }
 
-        public static Expression<Func<T, bool>> True<T>()
+        public static Expression<Func<T, bool>> Create<T>()
         {
             return param => true;
-        }
-
-        public static Expression<Func<T, bool>> False<T>()
-        {
-            return param => false;
         }
 
         public static Expression<Func<T, bool>> And<T>(this Expression<Func<T, bool>> first, Expression<Func<T, bool>> second)

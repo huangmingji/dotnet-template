@@ -29,6 +29,28 @@ namespace Lemon.App.Core.Extend
         }
 
         /// <summary>
+        /// 转换为整型
+        /// </summary>
+        /// <param name="data">数据</param>
+        public static long ToInt64(this object data, long defaultValue = 0)
+        {
+            if (data == null)
+                return defaultValue;
+            long result;
+            var success = Int64.TryParse(data.ToString(), out result);
+            if (success)
+                return result;
+            try
+            {
+                return Convert.ToInt64(ToDouble(data, 0));
+            }
+            catch (Exception)
+            {
+                return defaultValue;
+            }
+        }
+
+        /// <summary>
         /// 转换为可空整型
         /// </summary>
         /// <param name="data">数据</param>

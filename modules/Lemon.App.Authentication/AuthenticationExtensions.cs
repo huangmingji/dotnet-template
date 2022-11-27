@@ -82,7 +82,8 @@ namespace Lemon.App.Authentication
                     };
                 }
             );
-            services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddHttpContextAccessor();
+            // services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
             services.AddTransient<IAuthorizationHandler, PermissionHandler>();
             // services.AddScoped<ICurrentUser, CurrentUser>();
         }

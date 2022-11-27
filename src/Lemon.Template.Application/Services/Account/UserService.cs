@@ -6,6 +6,8 @@ using Lemon.Template.Application.Contracts.Account.Users.Dtos;
 using Lemon.Template.Domain.Account.Users;
 using Lemon.Template.Domain.Repositories;
 using Lemon.App.Application.Services;
+using Lemon.App.Core.Extend;
+using Ext = Lemon.Common.Extend.Ext;
 
 namespace Lemon.Template.Application.Services.Account;
 
@@ -30,44 +32,44 @@ public class UserService
 
     protected override Expression<Func<UserData, bool>> GetPageListExpression(GetUserPageListParamsDto input)
     {
-        Expression<Func<UserData, bool>> expression = ExtLinq.True<UserData>();
-        if (!input.Account.IsNullOrWhiteSpace())
+        Expression<Func<UserData, bool>> expression = Expressionable.Create<UserData>();
+        if (!Ext.IsNullOrWhiteSpace(input.Account))
         {
-            expression = expression.And(x => x.Account == input.Account);
+            expression = ExtLinq.And(expression, x => x.Account == input.Account);
         }
-        if (!input.Name.IsNullOrWhiteSpace())
+        if (!Ext.IsNullOrWhiteSpace(input.Name))
         {
-            expression = expression.And(x => x.NickName == input.Name);
+            expression = ExtLinq.And(expression, x => x.NickName == input.Name);
         }
-        if (!input.Account.IsNullOrWhiteSpace())
+        if (!Ext.IsNullOrWhiteSpace(input.Account))
         {
-            expression = expression.And(x => x.Account == input.Account);
+            expression = ExtLinq.And(expression, x => x.Account == input.Account);
         }
-        if (!input.Name.IsNullOrWhiteSpace())
+        if (!Ext.IsNullOrWhiteSpace(input.Name))
         {
-            expression = expression.And(x => x.NickName == input.Name);
+            expression = ExtLinq.And(expression, x => x.NickName == input.Name);
         }
         return expression;
     }
 
     protected override Expression<Func<UserData, bool>> GetListExpression(GetUserListParamsDto input)
     {
-        Expression<Func<UserData, bool>> expression = ExtLinq.True<UserData>();
-        if (!input.Account.IsNullOrWhiteSpace())
+        Expression<Func<UserData, bool>> expression = Expressionable.Create<UserData>();
+        if (!Ext.IsNullOrWhiteSpace(input.Account))
         {
-            expression = expression.And(x => x.Account == input.Account);
+            expression = ExtLinq.And(expression, x => x.Account == input.Account);
         }
-        if (!input.Name.IsNullOrWhiteSpace())
+        if (!Ext.IsNullOrWhiteSpace(input.Name))
         {
-            expression = expression.And(x => x.NickName == input.Name);
+            expression = ExtLinq.And(expression, x => x.NickName == input.Name);
         }
-        if (!input.Account.IsNullOrWhiteSpace())
+        if (!Ext.IsNullOrWhiteSpace(input.Account))
         {
-            expression = expression.And(x => x.Account == input.Account);
+            expression = ExtLinq.And(expression, x => x.Account == input.Account);
         }
-        if (!input.Name.IsNullOrWhiteSpace())
+        if (!Ext.IsNullOrWhiteSpace(input.Name))
         {
-            expression = expression.And(x => x.NickName == input.Name);
+            expression = ExtLinq.And(expression, x => x.NickName == input.Name);
         }
         return expression;
     }
