@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Lemon.Common.Snowflake
+namespace Lemon.App.Core.Snowflake
 {
     /// <summary>
     /// An object that generates IDs.

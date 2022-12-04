@@ -1,11 +1,11 @@
 using System;
-using Lemon.Common.Snowflake;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using System.Threading.Tasks;
 using Lemon.App.Core.Extend;
+using Lemon.App.Core.Snowflake;
 
 namespace Lemon.App.Application.Services
 {

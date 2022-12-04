@@ -4,12 +4,11 @@ using Lemon.App.Application.Contracts.Pagination;
 
 namespace Lemon.App.Application.Contracts.Services;
 
-public interface IApplicationService<TEntityDto, TKey, TCreateOrUpdateParamsDto, TGetPageListParamsDto, TGetListParamsDto>
+public interface IApplicationService<TEntityDto, TKey, TCreateOrUpdateParamsDto, TGetPageListParamsDto>
         where TEntityDto : class, new()
         where TKey : notnull
         where TCreateOrUpdateParamsDto : class, new()
         where TGetPageListParamsDto : class, new()
-        where TGetListParamsDto : class, new()
 {
 
     Task<TEntityDto> GetAsync(TKey id);
@@ -23,6 +22,4 @@ public interface IApplicationService<TEntityDto, TKey, TCreateOrUpdateParamsDto,
     Task DeleteManyAsync(IEnumerable<TKey> ids);
 
     Task<PagedResultDto<TEntityDto>> GetPageListAsync(TGetPageListParamsDto input);
-
-    Task<List<TEntityDto>> GetListAsync(TGetListParamsDto input);
 }

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Lemon.Common.Snowflake
+namespace Lemon.App.Core.Snowflake
 {
     public class InvalidSystemClock : Exception
     {      

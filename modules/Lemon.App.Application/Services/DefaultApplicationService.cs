@@ -11,14 +11,13 @@ using Lemon.App.Domain.Shared.Entities;
 
 namespace Lemon.App.Application.Services
 {
-    public class DefaultApplicationService<TEntity, TEntityDto, TKey, TCreateOrUpdateParamsDto, TGetPageListParamsDto, TGetListParamsDto>
-        : BaseService, IDefaultApplicationService<TEntityDto, TKey, TCreateOrUpdateParamsDto, TGetPageListParamsDto, TGetListParamsDto>
+    public class DefaultApplicationService<TEntity, TEntityDto, TKey, TCreateOrUpdateParamsDto, TGetPageListParamsDto>
+        : BaseService, IDefaultApplicationService<TEntityDto, TKey, TCreateOrUpdateParamsDto, TGetPageListParamsDto>
         where TEntity : class, IEntity<TKey>, new()
         where TEntityDto : class, new()
         where TKey : notnull
         where TCreateOrUpdateParamsDto : class, new()
         where TGetPageListParamsDto : class, IPagedRequestDto, new()
-        where TGetListParamsDto : class, new()
     {
         private readonly IAppRepository<TEntity, TKey> _repository;
 
@@ -107,20 +106,6 @@ namespace Lemon.App.Application.Services
             FillUpdateEntity(input, ref data);
             var result = await _repository.UpdateAsync(data);
             return ObjectMapper.Map<TEntity, TEntityDto>(data);
-        }
-
-
-        protected virtual Expression<Func<TEntity, bool>> GetListExpression(TGetListParamsDto input)
-        {
-            return Expressionable.Create<TEntity>();
-        }
-
-        public virtual async Task<List<TEntityDto>> GetListAsync(TGetListParamsDto input)
-        {
-            await base.ApplicationAuthorizationAsync(SearchPolicyName);
-            var expression = GetListExpression(input);
-            var data = await _repository.FindListAsync(expression);
-            return ObjectMapper.Map<List<TEntity>, List<TEntityDto>>(data);
         }
     }
 }

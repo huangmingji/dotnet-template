@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Lemon.Common.Snowflake
+namespace Lemon.App.Core.Snowflake
 {
     internal static class System
     {

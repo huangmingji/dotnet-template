@@ -1,18 +1,16 @@
 using System;
 using System.Linq.Expressions;
-using Lemon.Common.Extend;
 using Lemon.Template.Application.Contracts;
 using Lemon.Template.Application.Contracts.Account.Users.Dtos;
 using Lemon.Template.Domain.Account.Users;
 using Lemon.Template.Domain.Repositories;
 using Lemon.App.Application.Services;
 using Lemon.App.Core.Extend;
-using Ext = Lemon.Common.Extend.Ext;
 
 namespace Lemon.Template.Application.Services.Account;
 
 public class UserService 
-    : DefaultApplicationService<UserData, UserDataDto, long, CreateOrUpdateUserDto, GetUserPageListParamsDto, GetUserListParamsDto>, IUserService
+    : DefaultApplicationService<UserData, UserDataDto, long, CreateOrUpdateUserDto, GetUserPageListParamsDto>, IUserService
 {
     private readonly IUserRepository _userRepository;
     public UserService(IServiceProvider serviceProvider, IUserRepository userRepository) : base(serviceProvider, userRepository)
@@ -32,50 +30,14 @@ public class UserService
 
     protected override Expression<Func<UserData, bool>> GetPageListExpression(GetUserPageListParamsDto input)
     {
-        Expression<Func<UserData, bool>> expression = Expressionable.Create<UserData>();
-        if (!Ext.IsNullOrWhiteSpace(input.Account))
-        {
-            expression = ExtLinq.And(expression, x => x.Account == input.Account);
-        }
-        if (!Ext.IsNullOrWhiteSpace(input.Name))
-        {
-            expression = ExtLinq.And(expression, x => x.NickName == input.Name);
-        }
-        if (!Ext.IsNullOrWhiteSpace(input.Account))
-        {
-            expression = ExtLinq.And(expression, x => x.Account == input.Account);
-        }
-        if (!Ext.IsNullOrWhiteSpace(input.Name))
-        {
-            expression = ExtLinq.And(expression, x => x.NickName == input.Name);
-        }
-        return expression;
-    }
-
-    protected override Expression<Func<UserData, bool>> GetListExpression(GetUserListParamsDto input)
-    {
-        Expression<Func<UserData, bool>> expression = Expressionable.Create<UserData>();
-        if (!Ext.IsNullOrWhiteSpace(input.Account))
-        {
-            expression = ExtLinq.And(expression, x => x.Account == input.Account);
-        }
-        if (!Ext.IsNullOrWhiteSpace(input.Name))
-        {
-            expression = ExtLinq.And(expression, x => x.NickName == input.Name);
-        }
-        if (!Ext.IsNullOrWhiteSpace(input.Account))
-        {
-            expression = ExtLinq.And(expression, x => x.Account == input.Account);
-        }
-        if (!Ext.IsNullOrWhiteSpace(input.Name))
-        {
-            expression = ExtLinq.And(expression, x => x.NickName == input.Name);
-        }
+        Expression<Func<UserData, bool>> expression = Expressionable.Create<UserData>()
+        .AndIf(!input.Account.IsNullOrWhiteSpace(), x=> x.Account == input.Account)
+        .AndIf(!input.Name.IsNullOrWhiteSpace(), x=> x.NickName == input.Name);
         return expression;
     }
 
     protected override Func<UserData, object> GetPageListOrderByDescending()
     {
-        return new Func<UserData, object>(x=> x.AddTime);
+        return new Func<UserData, object>(x=> x.CreationTime);
     }
 }

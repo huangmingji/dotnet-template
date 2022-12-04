@@ -23,7 +23,7 @@ namespace Lemon.App.Application
                 {
                     serviceCollection.AddScoped(targetInterface, definedType);
                 }
-                else if (definedType.BaseType.Name == typeof(DefaultApplicationService<,,,,,>).Name)
+                else if (definedType.BaseType.Name == typeof(DefaultApplicationService<,,,,>).Name)
                 {
                     serviceCollection.AddScoped(targetInterface, definedType);
                 }
