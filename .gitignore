@@ -9,6 +9,7 @@ nupkg/
 .vscode
 .idea
 .vs
+.fleet
 
 # User-specific files
 *.suo
@@ -33,3 +34,4 @@ msbuild.err
 msbuild.wrn
 logs/
 files/
+nupkg/

@@ -2,10 +2,15 @@ using System.Data.Common;
 using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Distributed;
-using Lemon.Cache;
 using Lemon.App.Domain.Entities;
 using Lemon.App.Domain.Repositories;
-using IdentityModel;
+using Lemon.App.Core.Cache;
+using System.Threading.Tasks;
+using System.Collections.Generic;
+using System;
+using System.Linq;
+using Lemon.App.Domain.Shared.Entities;
+using Lemon.App.Core.ExceptionExtensions;
 
 namespace Lemon.App.EntityFrameworkCore.Repositories
 {
@@ -14,14 +19,18 @@ namespace Lemon.App.EntityFrameworkCore.Repositories
         where TEntity : class, IEntity<TKey>, new()
         where TKey : notnull
     {
-        private readonly IDistributedCache _cache;
         private readonly IDbContextProvider<TDbContext> _dbContextProvider;
         private readonly DbContext _dbContext;
-        public Repository(IDbContextProvider<TDbContext> dbContextProvider, IDistributedCache cache)
+        public Repository(IDbContextProvider<TDbContext> dbContextProvider)
         {
-            _cache = cache;
             _dbContextProvider = dbContextProvider;
             _dbContext = dbContextProvider.GetDbContext();
+        }
+
+
+        public TDbContext GetDbContext()
+        {
+            return _dbContextProvider.GetDbContext();
         }
 
         private async Task<int> SaveChangesAsync()
@@ -37,7 +46,6 @@ namespace Lemon.App.EntityFrameworkCore.Repositories
                 _dbContext.Set<TEntity>().Attach(entity);
                 _dbContext.Entry(entity).State = EntityState.Deleted;
                 await _dbContext.SaveChangesAsync();
-                await _cache.RemoveValueAsync(entity.Id.ToString());
             }
         }
 
@@ -48,18 +56,19 @@ namespace Lemon.App.EntityFrameworkCore.Repositories
             {
                 _dbContext.Set<TEntity>().Attach(entity);
                 _dbContext.Entry(entity).State = EntityState.Deleted;
-                await _cache.RemoveValueAsync(entity.Id.ToString());
             }
             await _dbContext.SaveChangesAsync();
         }
 
         public async Task<TEntity> GetAsync(Expression<Func<TEntity, bool>> predicate, bool withDetails = true)
         {
-            if (withDetails)
+            IQueryable<TEntity> queryable = withDetails ? WithDetails() : _dbContext.Set<TEntity>();
+            var data = await _dbContext.Set<TEntity>().Where(predicate).FirstOrDefaultAsync();
+            if (data == null)
             {
-                return await WithDetails().Where(predicate).FirstAsync();
+                throw new EntityNotFoundException();
             }
-            return await _dbContext.Set<TEntity>().Where(predicate).FirstAsync();
+            return data;
         }
 
         public async Task<List<TEntity>> FindAllAsync(bool withDetails = true)
@@ -89,6 +98,21 @@ namespace Lemon.App.EntityFrameworkCore.Repositories
             return await _dbContext.Set<TEntity>().Where(predicate).ToListAsync();
         }
 
+        public List<TEntity> FindList(Expression<Func<TEntity, bool>> expression, int pageIndex, int pageSize, bool includeDetails = true,
+                    Func<TEntity, Object> orderBy = null, Func<TEntity, Object> orderByDescending = null)
+        {
+            IEnumerable<TEntity> queryable = this.Where(expression, includeDetails);
+            if (orderBy != null)
+            {
+                queryable = queryable.OrderBy(orderBy);
+            }
+            if (orderByDescending != null)
+            {
+                queryable = queryable.OrderByDescending(orderByDescending);
+            }
+            return queryable.Skip(pageSize * (pageIndex - 1)).Take(pageSize).ToList();
+        }
+
         public async Task<List<TEntity>> FindListAsync(string sql)
         {
             return await _dbContext.Set<TEntity>().FromSqlRaw(sql).ToListAsync();
@@ -106,7 +130,7 @@ namespace Lemon.App.EntityFrameworkCore.Repositories
             return entity;
         }
 
-        public async Task<IEnumerable<TEntity>> InsertAsync(IEnumerable<TEntity> entities)
+        public async Task<List<TEntity>> InsertAsync(List<TEntity> entities)
         {
             foreach (var entity in entities)
             {
@@ -130,7 +154,6 @@ namespace Lemon.App.EntityFrameworkCore.Repositories
         {
             _dbContext.Entry(entity).State = EntityState.Modified;
             var result = await _dbContext.SaveChangesAsync();
-            await this.RemoveCacheAsync(entity.Id);
             return entity;
         }
 
@@ -141,51 +164,37 @@ namespace Lemon.App.EntityFrameworkCore.Repositories
 
         public async Task<TEntity> GetAsync(TKey id, bool withDetails = true)
         {
-            string key = $"{nameof(TEntity)}_{id}_{withDetails.ToString()}";
-            TEntity result = await _cache.GetValueAsync<TEntity>(key);
-            if(result != null) return result;
-
-            if (withDetails)
+            IQueryable<TEntity> queryable = withDetails ? WithDetails() : _dbContext.Set<TEntity>();
+            var data = await _dbContext.Set<TEntity>().Where(x => x.Id.Equals(id)).FirstOrDefaultAsync();
+            if (data == null)
             {
-                result = await WithDetails().Where(x=> x.Id.Equals(id)).FirstAsync();
-            } 
-            else 
-            {
-                result = await _dbContext.Set<TEntity>().Where(x=> x.Id.Equals(id)).FirstAsync();
+                throw new EntityNotFoundException();
             }
-            await _cache.SetValueAsync<TEntity>(key, result, TimeSpan.FromMinutes(10));
-            return result;
+            return data;
         }
 
         public async Task<TEntity?> FindAsync(TKey id, bool withDetails = true)
         {
-            string key = $"{nameof(TEntity)}_{id}_{withDetails.ToString()}";
-            TEntity? result = (await _cache.GetValueAsync<TEntity>(key));
-            if(result != null) return result;
-
+            IQueryable<TEntity> entities;
             if (withDetails)
             {
-                result = await WithDetails().Where(x=> x.Id.Equals(id)).FirstOrDefaultAsync();
+                entities = WithDetails();
             }
             else
             {
-                result = await _dbContext.Set<TEntity>().Where(x=> x.Id.Equals(id)).FirstOrDefaultAsync();
+                entities = _dbContext.Set<TEntity>();
             }
-            if(result != null) await _cache.SetValueAsync<TEntity>(key, result, TimeSpan.FromMinutes(10));
-            return result;
-        }
-
-        private async Task RemoveCacheAsync(TKey id)
-        {
-            string key1 = $"{nameof(TEntity)}_{id}_true";
-            string key2 = $"{nameof(TEntity)}_{id}_false";
-            await _cache.RemoveValueAsync(key1);
-            await _cache.RemoveValueAsync(key2);
+            return await entities.Where(x => x.Id.Equals(id)).FirstOrDefaultAsync();
         }
 
         public async Task<bool> AnyAsync(Expression<Func<TEntity, bool>> expression, bool withDetails = true)
         {
             return await Where(expression, withDetails).AnyAsync(expression);
+        }
+
+        public async Task<int> CountAsync(Expression<Func<TEntity, bool>> expression, bool withDetails = true)
+        {
+            return await Where(expression, withDetails).CountAsync();
         }
     }
 }

@@ -1,4 +1,6 @@
 
+using System;
+
 namespace Lemon.App.Application.Contracts.Entities;
 
 public class EntityDto<TKey> : IEntityDto<TKey> where TKey : notnull

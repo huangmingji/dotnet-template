@@ -6,7 +6,6 @@ namespace Lemon.App.Domain.Entities
 {
     public class EntityIdentity
     {
-
         /// <summary>
         /// 主键
         /// </summary>
@@ -17,33 +16,34 @@ namespace Lemon.App.Domain.Entities
         /// <summary>
         /// 新增人员
         /// </summary>
-        public string Adder { get; protected set; }
+        public long CreatorId { get; protected set; }
 
         /// <summary>
         /// 新增时间
         /// </summary>
-        public DateTime AddTime { get; protected set; } = DateTime.Now;
+        public DateTime CreationTime { get; protected set; } = DateTime.Now;
 
         /// <summary>
         /// 修改人
         /// </summary>
-        public string Modifier { get; protected set; }
+        public long LastModifierId { get; protected set; }
 
         /// <summary>
         /// 修改时间
         /// </summary>
-        public DateTime ModifyTime { get; protected set; } = DateTime.Now;
-        
-        public void UpdateAdder(string adder)
+        public DateTime LastModifyTime { get; protected set; } = DateTime.Now;
+
+
+        public void UpdateCreator(long creatorId)
         {
-            this.Adder = adder;
-            this.AddTime = DateTime.Now;
+            this.CreatorId = creatorId;
+            this.CreationTime = DateTime.Now;
         }
 
-        public void UpdateModifier(string modifier)
+        public void UpdateModifier(long lastModifierId)
         {
-            this.Modifier = modifier;
-            this.ModifyTime = DateTime.Now;
+            this.LastModifierId = lastModifierId;
+            this.LastModifyTime = DateTime.Now;
         }
     }
 }

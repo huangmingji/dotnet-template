@@ -2,11 +2,10 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Lemon.App.Core.Pagination;
-using Lemon.App.Core.Services;
+using Lemon.App.Application.Contracts.Pagination;
+using Lemon.App.Application.Services;
 using Lemon.Template.Application.Contracts;
 using Lemon.Template.Application.Contracts.Account.Roles.Dtos;
-using Lemon.Template.Domain.Account.Roles;
 
 namespace Lemon.Template.Application.Services.Account;
 
@@ -16,7 +15,7 @@ public class RoleService : ApplicationService, IRoleService
     {
     }
 
-    public Task<RoleData> CreateAsync(CreateOrUpdateRoleDto input)
+    public Task<RoleDataDto> CreateAsync(CreateOrUpdateRoleDto input)
     {
         throw new NotImplementedException();
     }
@@ -31,17 +30,22 @@ public class RoleService : ApplicationService, IRoleService
         throw new NotImplementedException();
     }
 
-    public Task<RoleData> GetAsync(long id)
+    public Task<RoleDataDto> GetAsync(long id)
     {
         throw new NotImplementedException();
     }
 
-    public Task<PagedResultDto<RoleData>> GetListAsync(GetRolesDto input)
+    public Task<List<RoleDataDto>> GetListAsync(GetRoleListParamsDto input)
     {
         throw new NotImplementedException();
     }
 
-    public Task<RoleData> UpdateAsync(long id, CreateOrUpdateRoleDto input)
+    public Task<PagedResultDto<RoleDataDto>> GetPageListAsync(GetRolePageListParamsDto input)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<RoleDataDto> UpdateAsync(long id, CreateOrUpdateRoleDto input)
     {
         throw new NotImplementedException();
     }

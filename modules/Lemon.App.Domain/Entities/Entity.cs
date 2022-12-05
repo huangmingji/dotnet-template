@@ -1,4 +1,7 @@
-﻿namespace Lemon.App.Domain.Entities
+﻿using System;
+using Lemon.App.Domain.Shared.Entities;
+
+namespace Lemon.App.Domain.Entities
 {
     public abstract class Entity<TKey> : IEntity<TKey> where TKey : notnull
     {
@@ -8,34 +11,34 @@
         /// <summary>
         /// 新增人员
         /// </summary>
-        public long Adder { get; protected set; }
+        public long CreatorId { get; protected set; }
 
         /// <summary>
         /// 新增时间
         /// </summary>
-        public DateTime AddTime { get; protected set; } = DateTime.Now;
+        public DateTime CreationTime { get; protected set; } = DateTime.Now;
 
         /// <summary>
         /// 修改人
         /// </summary>
-        public long Modifier { get; protected set; }
+        public long LastModifierId { get; protected set; }
         
         /// <summary>
         /// 修改时间
         /// </summary>
-        public DateTime ModifyTime { get; protected set; } = DateTime.Now;
+        public DateTime LastModifyTime { get; protected set; } = DateTime.Now;
 
 
-        public void UpdateAdder(long adder)
+        public void UpdateCreator(long creatorId)
         {
-            this.Adder = adder;
-            this.AddTime = DateTime.Now;
+            this.CreatorId = creatorId;
+            this.CreationTime = DateTime.Now;
         }
 
-        public void UpdateModifier(long modifier)
+        public void UpdateModifier(long lastModifierId)
         {
-            this.Modifier = modifier;
-            this.ModifyTime = DateTime.Now;
+            this.LastModifierId = lastModifierId;
+            this.LastModifyTime = DateTime.Now;
         }
     }
 }

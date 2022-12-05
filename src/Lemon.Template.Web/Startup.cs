@@ -3,7 +3,6 @@ using System.IO;
 using System.Linq;
 using Lemon.App.Authentication;
 using Lemon.App.Core;
-using Lemon.Common.Extend;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.CookiePolicy;
 using Microsoft.AspNetCore.Hosting;

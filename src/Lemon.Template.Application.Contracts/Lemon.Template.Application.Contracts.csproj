@@ -1,8 +1,9 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
+    <ProjectReference Include="..\..\modules\Lemon.App.Authentication\Lemon.App.Authentication.csproj" />
     <ProjectReference Include="..\..\modules\Lemon.App.Core\Lemon.App.Core.csproj" />
-    <ProjectReference Include="..\Lemon.Template.Domain\Lemon.Template.Domain.csproj" />
+    <ProjectReference Include="..\Lemon.Template.Domain.Shared\Lemon.Template.Domain.Shared.csproj" />
     <ProjectReference Include="..\..\modules\Lemon.App.Application.Contracts\Lemon.App.Application.Contracts.csproj" />
   </ItemGroup>
 
@@ -11,7 +12,7 @@
   </ItemGroup>
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net7.0</TargetFramework>
   </PropertyGroup>
 
 </Project>
