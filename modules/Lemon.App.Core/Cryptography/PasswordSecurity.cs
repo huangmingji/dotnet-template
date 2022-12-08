@@ -49,7 +49,6 @@ namespace Lemon.App.Core
 
             public const int HASH_BYTES = 18;
             public const int PBKDF2_ITERATIONS = 64000; // PBKDF2 迭代次数，默认32000
-            private const string HASH_ALGORITHM = "sha1"; // 加密方式，目前只支持sha1
 
             /// <summary>
             /// 创建hash+salt后的密码
@@ -63,7 +62,7 @@ namespace Lemon.App.Core
                 // Generate a random salt
                 try
                 {
-                    using (RNGCryptoServiceProvider csprng = new RNGCryptoServiceProvider())
+                    using (RandomNumberGenerator csprng = RandomNumberGenerator.Create())
                     {
                         csprng.GetBytes(salt);
                     }
@@ -146,9 +145,8 @@ namespace Lemon.App.Core
 
             private static byte[] PBKDF2(string password, byte[] salt, int iterations, int outputBytes)
             {
-                using (Rfc2898DeriveBytes pbkdf2 = new Rfc2898DeriveBytes(password, salt))
+                using (Rfc2898DeriveBytes pbkdf2 = new Rfc2898DeriveBytes(password, salt, iterations, HashAlgorithmName.SHA512))
                 {
-                    pbkdf2.IterationCount = iterations;
                     return pbkdf2.GetBytes(outputBytes);
                 }
             }

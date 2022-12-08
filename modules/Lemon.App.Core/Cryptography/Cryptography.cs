@@ -22,13 +22,13 @@ namespace Lemon.App.Core
                 byte[] keyArray = UTF8Encoding.UTF8.GetBytes(key);
                 byte[] toEncryptArray = UTF8Encoding.UTF8.GetBytes(toEncrypt);
 
-                using (RijndaelManaged rDel = new RijndaelManaged())
+                using (Aes aes = Aes.Create())
                 {
-                    rDel.Key = keyArray;
-                    rDel.Mode = CipherMode.ECB;
-                    rDel.Padding = PaddingMode.PKCS7;
+                    aes.Key = keyArray;
+                    aes.Mode = CipherMode.ECB;
+                    aes.Padding = PaddingMode.PKCS7;
 
-                    using (ICryptoTransform cTransform = rDel.CreateEncryptor())
+                    using (ICryptoTransform cTransform = aes.CreateEncryptor())
                     {
                         byte[] resultArray = cTransform.TransformFinalBlock(toEncryptArray, 0, toEncryptArray.Length);
                         return Convert.ToBase64String(resultArray, 0, resultArray.Length);
@@ -60,13 +60,13 @@ namespace Lemon.App.Core
                 byte[] keyArray = UTF8Encoding.UTF8.GetBytes(key);
                 byte[] toEncryptArray = Convert.FromBase64String(toDecrypt);
 
-                using (RijndaelManaged rDel = new RijndaelManaged())
+                using (Aes aes = Aes.Create())
                 {
-                    rDel.Key = keyArray;
-                    rDel.Mode = CipherMode.ECB;
-                    rDel.Padding = PaddingMode.PKCS7;
+                    aes.Key = keyArray;
+                    aes.Mode = CipherMode.ECB;
+                    aes.Padding = PaddingMode.PKCS7;
 
-                    using (ICryptoTransform cTransform = rDel.CreateDecryptor())
+                    using (ICryptoTransform cTransform = aes.CreateDecryptor())
                     {
                         byte[] resultArray = cTransform.TransformFinalBlock(toEncryptArray, 0, toEncryptArray.Length);
                         return UTF8Encoding.UTF8.GetString(resultArray);
