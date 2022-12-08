@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Lemon.App.Core;
 using Lemon.App.Core.ExceptionExtensions;
 using Lemon.App.Domain.Entities;
 

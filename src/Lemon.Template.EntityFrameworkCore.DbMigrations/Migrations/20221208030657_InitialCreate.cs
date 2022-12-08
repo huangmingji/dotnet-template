@@ -6,8 +6,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Lemon.Template.EntityFrameworkCore.DbMigrations.Migrations
 {
-    public partial class InitialCreateAccount : Migration
+    /// <inheritdoc />
+    public partial class InitialCreate : Migration
     {
+        /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
@@ -19,10 +21,10 @@ namespace Lemon.Template.EntityFrameworkCore.DbMigrations.Migrations
                     ParentId = table.Column<long>(type: "bigint", nullable: false),
                     Name = table.Column<string>(type: "text", nullable: true),
                     Permission = table.Column<string>(type: "text", nullable: true),
-                    Adder = table.Column<long>(type: "bigint", nullable: false),
-                    AddTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    Modifier = table.Column<long>(type: "bigint", nullable: false),
-                    ModifyTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    CreatorId = table.Column<long>(type: "bigint", nullable: false),
+                    CreationTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    LastModifierId = table.Column<long>(type: "bigint", nullable: false),
+                    LastModifyTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -39,10 +41,10 @@ namespace Lemon.Template.EntityFrameworkCore.DbMigrations.Migrations
                     IsDefault = table.Column<bool>(type: "boolean", nullable: false),
                     IsStatic = table.Column<bool>(type: "boolean", nullable: false),
                     IsPublic = table.Column<bool>(type: "boolean", nullable: false),
-                    Adder = table.Column<long>(type: "bigint", nullable: false),
-                    AddTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    Modifier = table.Column<long>(type: "bigint", nullable: false),
-                    ModifyTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    CreatorId = table.Column<long>(type: "bigint", nullable: false),
+                    CreationTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    LastModifierId = table.Column<long>(type: "bigint", nullable: false),
+                    LastModifyTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -74,10 +76,10 @@ namespace Lemon.Template.EntityFrameworkCore.DbMigrations.Migrations
                     LastVisitTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     ChangPasswordDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
-                    Adder = table.Column<long>(type: "bigint", nullable: false),
-                    AddTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    Modifier = table.Column<long>(type: "bigint", nullable: false),
-                    ModifyTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    CreatorId = table.Column<long>(type: "bigint", nullable: false),
+                    CreationTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    LastModifierId = table.Column<long>(type: "bigint", nullable: false),
+                    LastModifyTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -92,10 +94,10 @@ namespace Lemon.Template.EntityFrameworkCore.DbMigrations.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     RoleId = table.Column<long>(type: "bigint", nullable: false),
                     Permission = table.Column<string>(type: "text", nullable: true),
-                    Adder = table.Column<long>(type: "bigint", nullable: false),
-                    AddTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    Modifier = table.Column<long>(type: "bigint", nullable: false),
-                    ModifyTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    CreatorId = table.Column<long>(type: "bigint", nullable: false),
+                    CreationTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    LastModifierId = table.Column<long>(type: "bigint", nullable: false),
+                    LastModifyTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -116,10 +118,10 @@ namespace Lemon.Template.EntityFrameworkCore.DbMigrations.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     UserId = table.Column<long>(type: "bigint", nullable: false),
                     RoleId = table.Column<long>(type: "bigint", nullable: false),
-                    Adder = table.Column<long>(type: "bigint", nullable: false),
-                    AddTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    Modifier = table.Column<long>(type: "bigint", nullable: false),
-                    ModifyTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    CreatorId = table.Column<long>(type: "bigint", nullable: false),
+                    CreationTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    LastModifierId = table.Column<long>(type: "bigint", nullable: false),
+                    LastModifyTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -179,6 +181,7 @@ namespace Lemon.Template.EntityFrameworkCore.DbMigrations.Migrations
                 column: "UserId");
         }
 
+        /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(

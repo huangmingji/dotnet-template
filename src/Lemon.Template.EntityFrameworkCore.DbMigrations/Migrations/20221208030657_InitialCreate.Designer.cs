@@ -12,19 +12,20 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Lemon.Template.EntityFrameworkCore.DbMigrations.Migrations
 {
     [DbContext(typeof(EfDbMigrationsContext))]
-    [Migration("20221013062747_InitialCreateAccount")]
-    partial class InitialCreateAccount
+    [Migration("20221208030657_InitialCreate")]
+    partial class InitialCreate
     {
+        /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.9")
+                .HasAnnotation("ProductVersion", "7.0.0")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("Lemon.Template.Domain.Account.Role.PermissionData", b =>
+            modelBuilder.Entity("Lemon.Template.Domain.Account.Roles.PermissionData", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -32,16 +33,16 @@ namespace Lemon.Template.EntityFrameworkCore.DbMigrations.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
-                    b.Property<DateTime>("AddTime")
+                    b.Property<DateTime>("CreationTime")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<long>("Adder")
+                    b.Property<long>("CreatorId")
                         .HasColumnType("bigint");
 
-                    b.Property<long>("Modifier")
+                    b.Property<long>("LastModifierId")
                         .HasColumnType("bigint");
 
-                    b.Property<DateTime>("ModifyTime")
+                    b.Property<DateTime>("LastModifyTime")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Name")
@@ -58,7 +59,7 @@ namespace Lemon.Template.EntityFrameworkCore.DbMigrations.Migrations
                     b.ToTable("PermissionData", (string)null);
                 });
 
-            modelBuilder.Entity("Lemon.Template.Domain.Account.Role.RoleData", b =>
+            modelBuilder.Entity("Lemon.Template.Domain.Account.Roles.RoleData", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -66,10 +67,10 @@ namespace Lemon.Template.EntityFrameworkCore.DbMigrations.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
-                    b.Property<DateTime>("AddTime")
+                    b.Property<DateTime>("CreationTime")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<long>("Adder")
+                    b.Property<long>("CreatorId")
                         .HasColumnType("bigint");
 
                     b.Property<bool>("IsDefault")
@@ -81,10 +82,10 @@ namespace Lemon.Template.EntityFrameworkCore.DbMigrations.Migrations
                     b.Property<bool>("IsStatic")
                         .HasColumnType("boolean");
 
-                    b.Property<long>("Modifier")
+                    b.Property<long>("LastModifierId")
                         .HasColumnType("bigint");
 
-                    b.Property<DateTime>("ModifyTime")
+                    b.Property<DateTime>("LastModifyTime")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Name")
@@ -95,7 +96,7 @@ namespace Lemon.Template.EntityFrameworkCore.DbMigrations.Migrations
                     b.ToTable("RoleData", (string)null);
                 });
 
-            modelBuilder.Entity("Lemon.Template.Domain.Account.Role.RolePermissionData", b =>
+            modelBuilder.Entity("Lemon.Template.Domain.Account.Roles.RolePermissionData", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -103,16 +104,16 @@ namespace Lemon.Template.EntityFrameworkCore.DbMigrations.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
-                    b.Property<DateTime>("AddTime")
+                    b.Property<DateTime>("CreationTime")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<long>("Adder")
+                    b.Property<long>("CreatorId")
                         .HasColumnType("bigint");
 
-                    b.Property<long>("Modifier")
+                    b.Property<long>("LastModifierId")
                         .HasColumnType("bigint");
 
-                    b.Property<DateTime>("ModifyTime")
+                    b.Property<DateTime>("LastModifyTime")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Permission")
@@ -139,12 +140,6 @@ namespace Lemon.Template.EntityFrameworkCore.DbMigrations.Migrations
                     b.Property<string>("Account")
                         .HasColumnType("text");
 
-                    b.Property<DateTime>("AddTime")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<long>("Adder")
-                        .HasColumnType("bigint");
-
                     b.Property<DateTime>("AllowEndTime")
                         .HasColumnType("timestamp with time zone");
 
@@ -153,6 +148,12 @@ namespace Lemon.Template.EntityFrameworkCore.DbMigrations.Migrations
 
                     b.Property<DateTime>("ChangPasswordDate")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<long>("CreatorId")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("Email")
                         .HasColumnType("text");
@@ -165,6 +166,12 @@ namespace Lemon.Template.EntityFrameworkCore.DbMigrations.Migrations
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
+
+                    b.Property<long>("LastModifierId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("LastModifyTime")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<DateTime>("LastVisitTime")
                         .HasColumnType("timestamp with time zone");
@@ -180,12 +187,6 @@ namespace Lemon.Template.EntityFrameworkCore.DbMigrations.Migrations
 
                     b.Property<string>("Mobile")
                         .HasColumnType("text");
-
-                    b.Property<long>("Modifier")
-                        .HasColumnType("bigint");
-
-                    b.Property<DateTime>("ModifyTime")
-                        .HasColumnType("timestamp with time zone");
 
                     b.Property<bool>("MultiUserLogin")
                         .HasColumnType("boolean");
@@ -227,16 +228,16 @@ namespace Lemon.Template.EntityFrameworkCore.DbMigrations.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
-                    b.Property<DateTime>("AddTime")
+                    b.Property<DateTime>("CreationTime")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<long>("Adder")
+                    b.Property<long>("CreatorId")
                         .HasColumnType("bigint");
 
-                    b.Property<long>("Modifier")
+                    b.Property<long>("LastModifierId")
                         .HasColumnType("bigint");
 
-                    b.Property<DateTime>("ModifyTime")
+                    b.Property<DateTime>("LastModifyTime")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<long>("RoleId")
@@ -258,9 +259,9 @@ namespace Lemon.Template.EntityFrameworkCore.DbMigrations.Migrations
                     b.ToTable("UserRole", (string)null);
                 });
 
-            modelBuilder.Entity("Lemon.Template.Domain.Account.Role.RolePermissionData", b =>
+            modelBuilder.Entity("Lemon.Template.Domain.Account.Roles.RolePermissionData", b =>
                 {
-                    b.HasOne("Lemon.Template.Domain.Account.Role.RoleData", null)
+                    b.HasOne("Lemon.Template.Domain.Account.Roles.RoleData", null)
                         .WithMany("RolePermissionDatas")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -269,7 +270,7 @@ namespace Lemon.Template.EntityFrameworkCore.DbMigrations.Migrations
 
             modelBuilder.Entity("Lemon.Template.Domain.Account.Users.UserRole", b =>
                 {
-                    b.HasOne("Lemon.Template.Domain.Account.Role.RoleData", "RoleData")
+                    b.HasOne("Lemon.Template.Domain.Account.Roles.RoleData", "RoleData")
                         .WithOne()
                         .HasForeignKey("Lemon.Template.Domain.Account.Users.UserRole", "RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -284,7 +285,7 @@ namespace Lemon.Template.EntityFrameworkCore.DbMigrations.Migrations
                     b.Navigation("RoleData");
                 });
 
-            modelBuilder.Entity("Lemon.Template.Domain.Account.Role.RoleData", b =>
+            modelBuilder.Entity("Lemon.Template.Domain.Account.Roles.RoleData", b =>
                 {
                     b.Navigation("RolePermissionDatas");
                 });
